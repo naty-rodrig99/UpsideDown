@@ -78,3 +78,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+UpsideDown/.vscode/settings.json
+UpsideDown/.vscode/launch.json
+UpsideDown/.vscode/extensions.json
+UpsideDown/UserSettings/Layouts/default-2022.dwlt
+UpsideDown/Logs/shadercompiler-UnityShaderCompiler.exe0.log
