@@ -6,16 +6,16 @@ using UnityEngine;
 public class player : MonoBehaviour
 {
     Rigidbody2D rb;
-    BoxCollider2D bc;
     Vector2 movement = new Vector2(0, 0);
-    public float speed = 1;
-    public float speedJump = 1;
-    bool onGround = false;
-
-    bool goodWorld = true;
+    public float speed;
+    public float speedJump;
+    bool onGround;
+    bool goodWorld;
     // Start is called before the first frame update
     void Start()
     {
+        goodWorld = true;
+        onGround = false;
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -30,16 +30,23 @@ public class player : MonoBehaviour
             rb.AddForce(new Vector2(0, speedJump), ForceMode2D.Impulse);
         }
 
-        if (Input.GetButtonDown("Fire1") && goodWorld == true) // change from good to bad
+        if (Input.GetButtonDown("Fire1")) // change from good to bad
         {
-            Debug.Log("hello frends");
-            goodWorld = false;
-            transform.position = (new Vector3(0, -15, 0.5f));
-        }
-        if (Input.GetButtonDown("Fire1") && goodWorld == false) // change from bad to good
-        {
-            goodWorld = true;
-            transform.position = (new Vector3(0, 15, 0.5f));
+            Debug.Log("FIRE");
+            Debug.Log(goodWorld);
+            switch (goodWorld)
+            {
+                case true:
+                    Debug.Log("FIRE 1");
+                    goodWorld = false;
+                    transform.position += new Vector3(0, -15, 0);
+                    break;
+                case false:
+                    Debug.Log("FIRE 1");
+                    goodWorld = true;
+                    transform.position += new Vector3(0, 15, 0);
+                    break;
+            }
         }
 
     }
