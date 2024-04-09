@@ -11,6 +11,8 @@ public class player : MonoBehaviour
     public float speedJump;
     bool onGround;
     bool goodWorld;
+
+    public SoundManager soundManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +30,7 @@ public class player : MonoBehaviour
         if (Input.GetButtonDown("Jump") && onGround)
         {
             rb.AddForce(new Vector2(0, speedJump), ForceMode2D.Impulse);
+            soundManager.PlayJumpSound();
         }
 
         if (Input.GetButtonDown("Fire1")) // change from good to bad
