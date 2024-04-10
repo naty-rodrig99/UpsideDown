@@ -15,6 +15,7 @@ public class PlayerCamera : MonoBehaviour
     void Update()
     {
         Vector2 player_position = player.transform.position;
-        this.transform.position = player_position;
+        float cameraZ = transform.position.z;
+        transform.position = new Vector3(player_position.x, player_position.y, cameraZ);
     }
 }
