@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class player : MonoBehaviour
 {
@@ -25,14 +26,18 @@ public class player : MonoBehaviour
         BadWorld
     }
     public WorldType start_world;
-
+    private Vector3 initial_pos;
+    BoxCollider2D boxCollider2d;
 
     public SoundManager soundManager;
     // Start is called before the first frame update
     void Start()
     {
+        boxCollider2d = GetComponent<BoxCollider2D>();
+
+        initial_pos = transform.position;
+
         looking_direction = 1;
-        onGround = false;
         rb = GetComponent<Rigidbody2D>();
         camera_controller = Camera.GetComponent<PlayerCamera>();
         rb.freezeRotation = true;
@@ -51,6 +56,13 @@ public class player : MonoBehaviour
 
     void Update()
     {
+        if ((current_world == "good" && transform.position.y < -14) || current_world == "bad" && transform.position.y < -33)
+        {
+            transform.position = initial_pos;
+            rb.velocity = new Vector3(0, 0, 0);
+            return;
+        }
+
         float horizontalMovement = Input.GetAxis("Horizontal") * speed;
 
         if (horizontalMovement > 0)
@@ -63,11 +75,9 @@ public class player : MonoBehaviour
         }
         rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
 
-
-        if (Input.GetButtonDown("Jump") && onGround)
+        if (Input.GetButtonDown("Jump"))
         {
-            rb.AddForce(new Vector2(0, speedJump), ForceMode2D.Impulse);
-            soundManager.PlayJumpSound();
+            jump();
         }
 
         if (Input.GetButtonDown("Fire2")) // change from good to bad
@@ -79,6 +89,14 @@ public class player : MonoBehaviour
             fire_bullet();
         }
 
+    }
+    void jump()
+    {
+        if (isGrounded())
+        {
+            rb.AddForce(new Vector2(0, speedJump), ForceMode2D.Impulse);
+            soundManager.PlayJumpSound();
+        }
     }
     void fire_bullet()
     {
@@ -102,12 +120,28 @@ public class player : MonoBehaviour
         }
         camera_controller.update_current_world(current_world);
     }
+    private bool isGrounded()
+    {
+        int layerMask = ~(LayerMask.GetMask("PlayerLayer"));
+
+        RaycastHit2D hit = Physics2D.Raycast(boxCollider2d.bounds.center, Vector2.down, boxCollider2d.bounds.extents.y + 0.1f, layerMask);
+        if (hit.collider != null)
+        {
+            Debug.Log(hit.collider.tag);
+            if (hit.collider.tag == "platform")
+            {
+                return true;
+            }
+        }
+        //Debug.DrawRay(boxCollider2d.bounds.center, Vector2.down * (boxCollider2d.bounds.extents.y + 0.1f));
+
+        return false;
+    }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "platform")
+        if (other.gameObject.tag == "platform" || other.gameObject.tag == "box")
         {
-            onGround = true;
         }
 
     }
@@ -115,7 +149,6 @@ public class player : MonoBehaviour
     {
         if (other.gameObject.tag == "platform")
         {
-            onGround = false;
         }
 
     }
