@@ -8,13 +8,13 @@ public class hill_movement : MonoBehaviour
     public GameObject camera;
 
     public float speed;
-    public int height;
 
     Vector3 position;
     // Start is called before the first frame update
     void Start()
     {
         position = new Vector3(0, transform.position.y, transform.position.z);
+
     }
 
     // Update is called once per frame
@@ -23,7 +23,6 @@ public class hill_movement : MonoBehaviour
         float player_x = player.transform.position.x;
 
         position.x = player_x * speed;
-        position.y = player.transform.position.y + height;
         transform.position = position;
 
     }
