@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a083b4dbbd7bbad4fb5eb0e0aa2fc44b
+guid: 0b9087858b097b84b90e49caca2481bc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: gamedesign-pixilart (1)_0
+      name: gamedesign-pixilart (2)_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 1240
-        width: 175
-        height: 160
+        y: 83
+        width: 24
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dfdd5784fd053ff40bcc61f1d24de0b0
-      internalID: -1204422837
+      spriteID: 449e4611d5abf5e44b97743a14b83f7b
+      internalID: -895926676
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gamedesign-pixilart (1)_1
+      name: gamedesign-pixilart (2)_1
       rect:
         serializedVersion: 2
-        x: 175
-        y: 1240
-        width: 175
-        height: 160
+        x: 25
+        y: 83
+        width: 24
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 996afc5c61258d44cb6272b2c427b0ac
-      internalID: -403981757
+      spriteID: e04cb20d0aa9b10488fea97e240ad826
+      internalID: 1163249372
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gamedesign-pixilart (1)_2
+      name: gamedesign-pixilart (2)_2
       rect:
         serializedVersion: 2
         x: 0
-        y: 1073
-        width: 175
-        height: 160
+        y: 65
+        width: 24
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 583fea62fa4349348b2d9e8a2a89f47e
-      internalID: 729112948
+      spriteID: 953f9e28dfbdd20419d7b3cac926bc26
+      internalID: -1583369623
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gamedesign-pixilart (1)_3
+      name: gamedesign-pixilart (2)_3
       rect:
         serializedVersion: 2
-        x: 174
-        y: 1072
-        width: 175
-        height: 160
+        x: 25
+        y: 65
+        width: 24
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 509c3615470a2004d96faa8171e3e127
-      internalID: 679817259
+      spriteID: 16a0ca468f5954b4e86cd38128439ab5
+      internalID: 338059281
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gamedesign-pixilart (1)_4
+      name: gamedesign-pixilart (2)_4
       rect:
         serializedVersion: 2
-        x: 16
-        y: 888
-        width: 175
-        height: 160
+        x: 0
+        y: 45
+        width: 24
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,20 +195,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dc522285b4125304abd85580f455ab41
-      internalID: -1006708529
+      spriteID: 2682d409aa919784dbc6d48969967eea
+      internalID: -272788513
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gamedesign-pixilart (1)_5
+      name: gamedesign-pixilart (2)_5
       rect:
         serializedVersion: 2
-        x: 175
-        y: 889
-        width: 175
-        height: 160
+        x: 25
+        y: 45
+        width: 24
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,8 +216,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df70ddee015b0754aa2f691a73c0b3ec
-      internalID: 606995364
+      spriteID: 02137b6841fc14245bc28b61298ce2d2
+      internalID: 324804687
       vertices: []
       indices: 
       edges: []
@@ -233,12 +233,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      gamedesign-pixilart (1)_0: -1204422837
-      gamedesign-pixilart (1)_1: -403981757
-      gamedesign-pixilart (1)_2: 729112948
-      gamedesign-pixilart (1)_3: 679817259
-      gamedesign-pixilart (1)_4: -1006708529
-      gamedesign-pixilart (1)_5: 606995364
+      gamedesign-pixilart (2)_0: -895926676
+      gamedesign-pixilart (2)_1: 1163249372
+      gamedesign-pixilart (2)_2: -1583369623
+      gamedesign-pixilart (2)_3: 338059281
+      gamedesign-pixilart (2)_4: -272788513
+      gamedesign-pixilart (2)_5: 324804687
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
