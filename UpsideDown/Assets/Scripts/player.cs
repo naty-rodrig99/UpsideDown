@@ -9,6 +9,7 @@ public class player : MonoBehaviour
     Vector2 movement = new Vector2(0, 0);
     public float speed;
     public float speedJump;
+    public Animator animator;
     bool onGround;
     bool goodWorld;
 
@@ -31,6 +32,7 @@ public class player : MonoBehaviour
         {
             rb.AddForce(new Vector2(0, speedJump), ForceMode2D.Impulse);
             soundManager.PlayJumpSound();
+            animator.SetBool("isJumping", true);
         }
 
         if (Input.GetButtonDown("Fire1")) // change from good to bad
@@ -59,6 +61,7 @@ public class player : MonoBehaviour
         if (other.gameObject.tag == "platform")
         {
             onGround = true;
+            animator.SetBool("isJumping", false);
         }
 
     }
