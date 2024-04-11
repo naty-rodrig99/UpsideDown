@@ -16,8 +16,10 @@ public class player : MonoBehaviour
 
     public GameObject Camera;
     PlayerCamera camera_controller;
+    BoxScript box_controller;
 
     public GameObject bullet;
+    public GameObject Box;
 
     private int looking_direction;
 
@@ -41,6 +43,7 @@ public class player : MonoBehaviour
         looking_direction = 1;
         rb = GetComponent<Rigidbody2D>();
         camera_controller = Camera.GetComponent<PlayerCamera>();
+        box_controller = Box.GetComponent<BoxScript>();
         rb.freezeRotation = true;
 
 
@@ -53,6 +56,7 @@ public class player : MonoBehaviour
             current_world = "bad";
         }
         camera_controller.update_current_world(current_world);
+        box_controller.update_current_world(current_world);
     }
 
     void Update()
@@ -121,6 +125,7 @@ public class player : MonoBehaviour
                 break;
         }
         camera_controller.update_current_world(current_world);
+        box_controller.update_current_world(current_world);
     }
     private bool isGrounded()
     {
