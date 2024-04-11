@@ -10,6 +10,7 @@ public class player : MonoBehaviour
     Vector2 movement = new Vector2(0, 0);
     public float speed;
     public float speedJump;
+    public Animator animator;
     bool onGround;
     string current_world;
 
@@ -96,6 +97,7 @@ public class player : MonoBehaviour
         {
             rb.AddForce(new Vector2(0, speedJump), ForceMode2D.Impulse);
             soundManager.PlayJumpSound();
+            animator.SetBool("isJumping", true);
         }
     }
     void fire_bullet()
