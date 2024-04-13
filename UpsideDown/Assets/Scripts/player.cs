@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
+
 
 public class player : MonoBehaviour
 {
@@ -10,7 +12,7 @@ public class player : MonoBehaviour
     Vector2 movement = new Vector2(0, 0);
     public float speed;
     public float speedJump;
-    public Animator animator;
+    //public Animator animator;
     bool onGround;
     string current_world;
 
@@ -61,10 +63,15 @@ public class player : MonoBehaviour
 
     void Update()
     {
-        if ((current_world == "good" && transform.position.y < -14) || current_world == "bad" && transform.position.y < -33)
+        if ((current_world == "good" && transform.position.y < -14) || (current_world == "bad" && transform.position.y < -33))
         {
+
             transform.position = initial_pos;
             rb.velocity = new Vector3(0, 0, 0);
+            if (current_world == "bad")
+            {
+                change_world();
+            }
             return;
         }
 
@@ -93,6 +100,10 @@ public class player : MonoBehaviour
         {
             fire_bullet();
         }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
 
     }
     void jump()
@@ -101,7 +112,7 @@ public class player : MonoBehaviour
         {
             rb.AddForce(new Vector2(0, speedJump), ForceMode2D.Impulse);
             soundManager.PlayJumpSound();
-            animator.SetBool("isJumping", true);
+            //animator.SetBool("isJumping", true);
         }
     }
     void fire_bullet()
