@@ -120,6 +120,7 @@ public class player : MonoBehaviour
         GameObject bullet_instance = Instantiate(bullet, transform.position, Quaternion.identity);
         Bullet bullet_script = bullet_instance.GetComponent<Bullet>();
         bullet_script.set_direction(looking_direction); // sets direction of bullet, 1 right -1 left
+        soundManager.PlayShootSound();
     }
 
     void change_world()
@@ -160,6 +161,7 @@ public class player : MonoBehaviour
     {
         if (other.gameObject.tag == "platform" || other.gameObject.tag == "box")
         {
+            soundManager.PlayLandingSound();
         }
 
     }
@@ -169,5 +171,13 @@ public class player : MonoBehaviour
         {
         }
 
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "point")
+        {
+            Destroy(other.gameObject);
+            soundManager.PlayCollectPointSound();
+        }
     }
 }

@@ -2225,7 +2225,7 @@ GameObject:
   - component: {fileID: 694371060}
   m_Layer: 0
   m_Name: heart
-  m_TagString: Untagged
+  m_TagString: point
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7294,6 +7294,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpSound: {fileID: 8300000, guid: 5bd5112b2eb42e84b983d51eaa622e63, type: 3}
+  landSound: {fileID: 8300000, guid: db98e93b554b05541b62bce1899d6fe3, type: 3}
+  collectPointSound: {fileID: 8300000, guid: 3621273884c585c46aabe6c5ccc01f73, type: 3}
+  shootSound: {fileID: 8300000, guid: 8a9e7f37fb013fd43a9ce0a2ecafe598, type: 3}
 --- !u!82 &1918539538
 AudioSource:
   m_ObjectHideFlags: 0
