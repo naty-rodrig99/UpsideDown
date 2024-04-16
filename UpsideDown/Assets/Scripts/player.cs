@@ -12,7 +12,7 @@ public class player : MonoBehaviour
     Vector2 movement = new Vector2(0, 0);
     public float speed;
     public float speedJump;
-    //public Animator animator;
+    public Animator animator;
     bool onGround;
     string current_world;
 
@@ -52,10 +52,12 @@ public class player : MonoBehaviour
         if (start_world == WorldType.GoodWorld)
         {
             current_world = "good";
+            animator.SetBool("good_world", true);
         }
         else
         {
             current_world = "bad";
+            animator.SetBool("good_world", false);
         }
         camera_controller.update_current_world(current_world);
         box_controller.update_current_world(current_world);
@@ -80,15 +82,31 @@ public class player : MonoBehaviour
         if (horizontalMovement > 0)
         {
             looking_direction = 1; // Right
+            animator.SetBool("good_Left", false);
+            animator.SetBool("good_Right", true);
+            animator.SetBool("bad_Left", false);
+            animator.SetBool("bad_Right", true);
         }
         else if (horizontalMovement < 0)
         {
             looking_direction = -1; // Left
+            animator.SetBool("good_Right", false);
+            animator.SetBool("good_Left", true);
+            animator.SetBool("bad_Right", false);
+            animator.SetBool("bad_Left", true);
+        }
+        else if(horizontalMovement == 0)
+        {
+            animator.SetBool("good_Left", false);
+            animator.SetBool("good_Right", false);
+            animator.SetBool("bad_Left", false);
+            animator.SetBool("bad_Right", false);
         }
         rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
 
         if (Input.GetButtonDown("Jump"))
         {
+            animator.SetBool("isJumping", true);
             jump();
         }
 
@@ -112,7 +130,6 @@ public class player : MonoBehaviour
         {
             rb.AddForce(new Vector2(0, speedJump), ForceMode2D.Impulse);
             soundManager.PlayJumpSound();
-            //animator.SetBool("isJumping", true);
         }
     }
     void fire_bullet()
@@ -129,10 +146,12 @@ public class player : MonoBehaviour
             case "good":
                 current_world = "bad";
                 transform.position += new Vector3(0, -20, 0);
+                animator.SetBool("good_world", false);
                 break;
             case "bad":
                 current_world = "good";
                 transform.position += new Vector3(0, 20, 0);
+                animator.SetBool("good_world", true);
                 break;
         }
         camera_controller.update_current_world(current_world);
@@ -141,13 +160,13 @@ public class player : MonoBehaviour
     private bool isGrounded()
     {
         int layerMask = ~(LayerMask.GetMask("PlayerLayer"));
-
         RaycastHit2D hit = Physics2D.Raycast(boxCollider2d.bounds.center, Vector2.down, boxCollider2d.bounds.extents.y + 0.1f, layerMask);
         if (hit.collider != null)
         {
             Debug.Log(hit.collider.tag);
             if (hit.collider.tag == "platform")
             {
+                animator.SetBool("isJumping", false);
                 return true;
             }
         }
