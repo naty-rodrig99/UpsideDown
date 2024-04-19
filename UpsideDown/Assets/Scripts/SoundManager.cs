@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public AudioClip jumpSound;
     private AudioSource audioSource;
+
+    public AudioClip jumpSound;
+    public AudioClip landSound;
+    public AudioClip collectPointSound;
+    public AudioClip shootSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,5 +26,20 @@ public class SoundManager : MonoBehaviour
     public void PlayJumpSound()
     {
         audioSource.PlayOneShot(jumpSound);
+    }
+
+    public void PlayLandingSound()
+    {
+        audioSource.PlayOneShot(landSound);
+    }
+
+    public void PlayCollectPointSound()
+    {
+        audioSource.PlayOneShot(collectPointSound);
+    }
+
+    public void PlayShootSound()
+    {
+        audioSource.PlayOneShot(shootSound);
     }
 }

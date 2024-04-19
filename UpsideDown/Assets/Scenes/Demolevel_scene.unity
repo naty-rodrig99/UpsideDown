@@ -2143,7 +2143,7 @@ GameObject:
   - component: {fileID: 694371060}
   m_Layer: 0
   m_Name: heart
-  m_TagString: Untagged
+  m_TagString: point
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7797,7 +7797,7 @@ PrefabInstance:
       objectReference: {fileID: 2113055464}
     - target: {fileID: 2489726390049518957, guid: 3d0a69fd1819b424ab860fbcddb2db39, type: 3}
       propertyPath: m_Name
-      value: Main_Character
+        value: Main_Character
       objectReference: {fileID: 0}
     - target: {fileID: 7001489431357780500, guid: 3d0a69fd1819b424ab860fbcddb2db39, type: 3}
       propertyPath: m_LocalPosition.x

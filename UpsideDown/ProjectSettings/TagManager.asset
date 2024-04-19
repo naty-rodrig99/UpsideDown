@@ -6,6 +6,7 @@ TagManager:
   tags:
   - platform
   - Box
+  - point
   layers:
   - Default
   - TransparentFX
