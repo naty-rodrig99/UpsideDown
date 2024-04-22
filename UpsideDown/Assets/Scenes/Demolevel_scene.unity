@@ -7797,8 +7797,20 @@ PrefabInstance:
       objectReference: {fileID: 2113055464}
     - target: {fileID: 2489726390049518957, guid: 3d0a69fd1819b424ab860fbcddb2db39, type: 3}
       propertyPath: m_Name
-        value: Main_Character
+      value: Main_Character
       objectReference: {fileID: 0}
+    - target: {fileID: 3062410542449172662, guid: 3d0a69fd1819b424ab860fbcddb2db39, type: 3}
+      propertyPath: landSound
+      value: 
+      objectReference: {fileID: 8300000, guid: db98e93b554b05541b62bce1899d6fe3, type: 3}
+    - target: {fileID: 3062410542449172662, guid: 3d0a69fd1819b424ab860fbcddb2db39, type: 3}
+      propertyPath: shootSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 8a9e7f37fb013fd43a9ce0a2ecafe598, type: 3}
+    - target: {fileID: 3062410542449172662, guid: 3d0a69fd1819b424ab860fbcddb2db39, type: 3}
+      propertyPath: collectPointSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 3621273884c585c46aabe6c5ccc01f73, type: 3}
     - target: {fileID: 7001489431357780500, guid: 3d0a69fd1819b424ab860fbcddb2db39, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.02
