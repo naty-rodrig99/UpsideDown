@@ -25,6 +25,12 @@ public class player : MonoBehaviour
 
     private int looking_direction;
 
+    double switchCharge;
+    public double SwitchCost = 40;
+    public double chargeSpeed = 1;
+    public GameObject switchChargeBar;
+    private double switchChargeBar_full_height;
+
     public enum WorldType
     {
         GoodWorld,
@@ -38,6 +44,8 @@ public class player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        switchChargeBar_full_height = switchChargeBar.transform.localScale.y;
+
         boxCollider2d = GetComponent<BoxCollider2D>();
 
         initial_pos = transform.position;
@@ -47,6 +55,7 @@ public class player : MonoBehaviour
         camera_controller = Camera.GetComponent<PlayerCamera>();
         box_controller = Box.GetComponent<BoxScript>();
         rb.freezeRotation = true;
+        switchCharge = 20;
 
 
         if (start_world == WorldType.GoodWorld)
@@ -112,7 +121,7 @@ public class player : MonoBehaviour
 
         if (Input.GetButtonDown("Fire2")) // change from good to bad
         {
-            change_world();
+            try_change_world();
         }
         if (Input.GetButtonDown("Fire1") && current_world == "bad")
         {
@@ -123,6 +132,20 @@ public class player : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
+    }
+    void FixedUpdate(){
+        if(switchCharge < 100){
+            update_switch_ui_bar(chargeSpeed * 0.01);
+        }
+        Debug.Log(switchCharge);
+    }
+    void update_switch_ui_bar(double value){
+        switchCharge += value;
+        Vector3 scale = switchChargeBar.transform.localScale;
+        scale.y = (float)switchChargeBar_full_height * (float)(switchCharge / 100.0f);
+        switchChargeBar.transform.localScale = scale;
+
+        
     }
     void jump()
     {
@@ -138,6 +161,12 @@ public class player : MonoBehaviour
         Bullet bullet_script = bullet_instance.GetComponent<Bullet>();
         bullet_script.set_direction(looking_direction); // sets direction of bullet, 1 right -1 left
         soundManager.PlayShootSound();
+    }
+    void try_change_world(){
+        if(switchCharge >= SwitchCost){
+            update_switch_ui_bar(-SwitchCost);
+            change_world();
+        }
     }
 
     void change_world()
