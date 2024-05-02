@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using System;
 
 
 public class player : MonoBehaviour
@@ -37,6 +38,10 @@ public class player : MonoBehaviour
 
     private float horizontalMovement;
 
+    private Vector2 horizontalVelocity;
+    private float[] accelerationCurve;
+    private int[] horizontalIndex;
+
 
     public enum WorldType
     {
@@ -51,6 +56,11 @@ public class player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        GenerateAccelerationCurve(50, speed*2, speed/5);
+        horizontalVelocity = new Vector2(0.0f,0.0f);
+        horizontalIndex = new int[]{0,0};
+
         wallClimbReady = new bool[2]{false,false}; // [0] left [1] right
         wallClimbActive = new bool[2]{false,false}; // [0] left [1] right
         wallClimbTimout = 0;
@@ -98,7 +108,6 @@ public class player : MonoBehaviour
             return;
         }
 
-        horizontalMovement = Input.GetAxis("Horizontal") * speed;
 
         if (horizontalMovement > 0)
         {
@@ -171,10 +180,28 @@ public class player : MonoBehaviour
     }
     void FixedUpdate(){
 
-        
-        if(!isGrounded()){
-            horizontalMovement *= 0.1f;
+        horizontalMovement = Input.GetAxis("Horizontal");
+
+        if (Input.GetAxisRaw("Horizontal") < 0)
+        {
+            horizontalMovement *= accelerationCurve[Math.Min(accelerationCurve.Length -1, horizontalIndex[0])];
+            horizontalIndex[0] += 1;
+            Debug.Log(horizontalMovement);
+        }else{
+            horizontalIndex[0] = 0;
         }
+        if (Input.GetAxisRaw("Horizontal") > 0 )
+        {
+            horizontalMovement *= accelerationCurve[Math.Min(accelerationCurve.Length -1, horizontalIndex[1])];
+            horizontalIndex[1] += 1;
+        }else{
+            horizontalIndex[1] = 0;
+        }
+
+        //if(!isGrounded()){
+        //    horizontalMovement *= 0.7f;
+        //}
+
         //rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
         rb.AddForce(new Vector2(horizontalMovement, 0), ForceMode2D.Force);
 
@@ -193,7 +220,16 @@ public class player : MonoBehaviour
             wallClimbGraceTimer -= 1;
         }
     }
-    
+
+    public void GenerateAccelerationCurve(int n, float init, float y_converge)
+    {
+        accelerationCurve = new float[n]; 
+        for (int i = 0; i < n; i++)
+        {
+            float x = i; 
+            accelerationCurve[i] = (init / (float)Math.Exp(x)) + y_converge; 
+        }
+    }
     
     void jump()
     {
@@ -205,13 +241,13 @@ public class player : MonoBehaviour
         }
         if(wallClimbGraceTimer > 0.0f && latest_activation == false){ // left wall jump
             Debug.Log("Jump left wall");
-            rb.AddForce(new Vector2(speedJump*0.3f, speedJump*0.5f), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(speedJump*0.8f, speedJump*0.8f), ForceMode2D.Impulse);
             wallClimbTimout = 10.0f;
             wallClimbReady[0] = false; 
         }
         if(wallClimbGraceTimer > 0.0f && latest_activation == true){ // right wall jump
             Debug.Log("Jump right wall");
-            rb.AddForce(new Vector2(-speedJump*0.3f, speedJump*0.5f), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(-speedJump*0.8f, speedJump*0.8f), ForceMode2D.Impulse);
             wallClimbTimout = 10.0f;
             wallClimbReady[1] = false; 
         }
@@ -256,11 +292,12 @@ public class player : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(boxCollider2d.bounds.center, Vector2.down, boxCollider2d.bounds.extents.y + 0.1f, layerMask);
         if (hit.collider != null)
         {
-            if (hit.collider.tag == "platform")
+            if (hit.collider.tag == "platform" || hit.collider.tag == "Tile")
             {
                 animator.SetBool("isJumping", false);
                 return true;
             }
+            
         }
         //Debug.DrawRay(boxCollider2d.bounds.center, Vector2.down * (boxCollider2d.bounds.extents.y + 0.1f));
 
@@ -269,19 +306,18 @@ public class player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "platform" || other.gameObject.tag == "box" || other.gameObject.tag == "Tile")
-        {
+        if (other.gameObject.tag == "platform" || other.gameObject.tag == "box" || other.gameObject.tag == "Tile"){
+        
             soundManager.PlayLandingSound();
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
 
             if(!isGrounded()){
                 RaycastHit2D hit_left = Physics2D.Raycast(boxCollider2d.bounds.center, Vector2.left, boxCollider2d.bounds.extents.x + 0.2f, ~(LayerMask.GetMask("PlayerLayer")));
                 RaycastHit2D hit_right = Physics2D.Raycast(boxCollider2d.bounds.center, Vector2.right, boxCollider2d.bounds.extents.x + 0.2f, ~(LayerMask.GetMask("PlayerLayer")));
 
-                wallClimbReady[0] = hit_left.collider != null && wallClimbTimout <= 0.5f;
-                wallClimbReady[1] = hit_right.collider != null && wallClimbTimout <= 0.5f;
+                wallClimbReady[0] = hit_left.collider != null && (wallClimbTimout <= 0.5f || latest_activation == true);
+                wallClimbReady[1] = hit_right.collider != null && (wallClimbTimout <= 0.5f || latest_activation == false);
             }
-            
-
         }
     }
     private void OnCollisionExit2D(Collision2D other)
