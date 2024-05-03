@@ -244,12 +244,15 @@ public class player : MonoBehaviour
             rb.AddForce(new Vector2(speedJump*0.8f, speedJump*0.8f), ForceMode2D.Impulse);
             wallClimbTimout = 10.0f;
             wallClimbReady[0] = false; 
+            wallClimbGraceTimer = 0;
         }
         if(wallClimbGraceTimer > 0.0f && latest_activation == true){ // right wall jump
             Debug.Log("Jump right wall");
             rb.AddForce(new Vector2(-speedJump*0.8f, speedJump*0.8f), ForceMode2D.Impulse);
             wallClimbTimout = 10.0f;
             wallClimbReady[1] = false; 
+                        wallClimbGraceTimer = 0;
+
         }
     }
     void fire_bullet()
