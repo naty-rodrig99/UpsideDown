@@ -4,6 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using Unity.Burst.CompilerServices;
+using System;
+using TMPro;
 
 
 public class player : MonoBehaviour
@@ -31,6 +34,9 @@ public class player : MonoBehaviour
     public GameObject switchChargeBar;
     private double switchChargeBar_full_height;
 
+    public TextMeshProUGUI bulletText; 
+    private int currentBullets = 0; 
+
     public enum WorldType
     {
         GoodWorld,
@@ -41,6 +47,9 @@ public class player : MonoBehaviour
     BoxCollider2D boxCollider2d;
 
     public SoundManager soundManager;
+    public HealthManager healthManager;
+    private object console;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -70,6 +79,7 @@ public class player : MonoBehaviour
         }
         camera_controller.update_current_world(current_world);
         box_controller.update_current_world(current_world);
+
     }
 
     void Update()
@@ -83,6 +93,9 @@ public class player : MonoBehaviour
             {
                 change_world();
             }
+
+            Debug.Log("calling");
+            healthManager.ModifyHealth(-1);
             return;
         }
 
@@ -220,12 +233,14 @@ public class player : MonoBehaviour
         }
 
     }
-    private void OnTriggerEnter2D(Collider2D other)
+
+    public void AddBullets(int amount)
     {
-        if (other.gameObject.tag == "point")
-        {
-            Destroy(other.gameObject);
-            soundManager.PlayCollectPointSound();
-        }
+        currentBullets += amount;
+    }
+
+    public void UpdateBulletUI()
+    {
+        bulletText.text = currentBullets.ToString();
     }
 }
