@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using System;
 
 
 public class player : MonoBehaviour
@@ -13,7 +14,6 @@ public class player : MonoBehaviour
     public float speed;
     public float speedJump;
     public Animator animator;
-    bool onGround;
     string current_world;
 
     public GameObject Camera;
@@ -25,11 +25,23 @@ public class player : MonoBehaviour
 
     private int looking_direction;
 
-    double switchCharge;
-    public double SwitchCost = 40;
-    public double chargeSpeed = 1;
-    public GameObject switchChargeBar;
-    private double switchChargeBar_full_height;
+    public GameObject switchEnergy;
+    private SwitchBarUIBar EnergyBar;
+
+    private bool[] wallClimbReady;
+    private bool[] wallClimbActive;
+    private float wallClimbTimout;
+    private float wallClimbGraceTimer;
+    private bool latest_activation; // false left, true right
+
+    public float wallGlideSpeed;
+
+    private float horizontalMovement;
+
+    private Vector2 horizontalVelocity;
+    private float[] accelerationCurve;
+    private int[] horizontalIndex;
+
 
     public enum WorldType
     {
@@ -44,7 +56,18 @@ public class player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        switchChargeBar_full_height = switchChargeBar.transform.localScale.y;
+
+        GenerateAccelerationCurve(50, speed*2, speed/5);
+        horizontalVelocity = new Vector2(0.0f,0.0f);
+        horizontalIndex = new int[]{0,0};
+
+        wallClimbReady = new bool[2]{false,false}; // [0] left [1] right
+        wallClimbActive = new bool[2]{false,false}; // [0] left [1] right
+        wallClimbTimout = 0;
+        wallClimbGraceTimer = 0;
+        latest_activation = false;
+
+        EnergyBar = switchEnergy.GetComponent<SwitchBarUIBar>();
 
         boxCollider2d = GetComponent<BoxCollider2D>();
 
@@ -55,7 +78,6 @@ public class player : MonoBehaviour
         camera_controller = Camera.GetComponent<PlayerCamera>();
         box_controller = Box.GetComponent<BoxScript>();
         rb.freezeRotation = true;
-        switchCharge = 20;
 
 
         if (start_world == WorldType.GoodWorld)
@@ -86,7 +108,6 @@ public class player : MonoBehaviour
             return;
         }
 
-        float horizontalMovement = Input.GetAxis("Horizontal") * speed;
 
         if (horizontalMovement > 0)
         {
@@ -111,7 +132,7 @@ public class player : MonoBehaviour
             animator.SetBool("bad_Left", false);
             animator.SetBool("bad_Right", false);
         }
-        rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
+
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -132,27 +153,106 @@ public class player : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
+        // Wall gliding
+        if (Input.GetAxisRaw("Horizontal") < 0 && wallClimbReady[0])
+        {
+            wallClimbGraceTimer = 15.0f;
+            wallClimbActive[0] = true; 
+            latest_activation = false;
+        }else{
+            wallClimbActive[0] = false;
+        }
+        if (Input.GetAxisRaw("Horizontal") > 0 && wallClimbReady[1])
+        {
+            wallClimbGraceTimer = 15.0f;
+            wallClimbActive[1] = true;
+            latest_activation = true;
+            
+        }else{
+            wallClimbActive[1] = false;
+        }
+        if((wallClimbActive[0] || wallClimbActive[1]) && rb.drag != wallGlideSpeed){
+            rb.drag = wallGlideSpeed;
+        }
+        if(rb.drag == wallGlideSpeed && !wallClimbActive[0] && !wallClimbActive[1]){
+            rb.drag = 0.05f;
+        }
     }
     void FixedUpdate(){
-        if(switchCharge < 100){
-            update_switch_ui_bar(chargeSpeed * 0.01);
-        }
-        Debug.Log(switchCharge);
-    }
-    void update_switch_ui_bar(double value){
-        switchCharge += value;
-        Vector3 scale = switchChargeBar.transform.localScale;
-        scale.y = (float)switchChargeBar_full_height * (float)(switchCharge / 100.0f);
-        switchChargeBar.transform.localScale = scale;
 
-        
+        horizontalMovement = Input.GetAxis("Horizontal");
+
+        if (Input.GetAxisRaw("Horizontal") < 0)
+        {
+            horizontalMovement *= accelerationCurve[Math.Min(accelerationCurve.Length -1, horizontalIndex[0])];
+            horizontalIndex[0] += 1;
+            Debug.Log(horizontalMovement);
+        }else{
+            horizontalIndex[0] = 0;
+        }
+        if (Input.GetAxisRaw("Horizontal") > 0 )
+        {
+            horizontalMovement *= accelerationCurve[Math.Min(accelerationCurve.Length -1, horizontalIndex[1])];
+            horizontalIndex[1] += 1;
+        }else{
+            horizontalIndex[1] = 0;
+        }
+
+        //if(!isGrounded()){
+        //    horizontalMovement *= 0.7f;
+        //}
+
+        //rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
+        rb.AddForce(new Vector2(horizontalMovement, 0), ForceMode2D.Force);
+
+        float maxHorizontalSpeed = 10f; 
+        rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxHorizontalSpeed, maxHorizontalSpeed), rb.velocity.y);
+
+
+        if (wallClimbTimout > 0)
+        {
+            //("timeout: " + wallClimbTimout);
+            wallClimbTimout -= 1;
+        }
+        if (wallClimbGraceTimer > 0)
+        {
+            //Debug.Log("grace: " + wallClimbGraceTimer);
+            wallClimbGraceTimer -= 1;
+        }
     }
+
+    public void GenerateAccelerationCurve(int n, float init, float y_converge)
+    {
+        accelerationCurve = new float[n]; 
+        for (int i = 0; i < n; i++)
+        {
+            float x = i; 
+            accelerationCurve[i] = (init / (float)Math.Exp(x)) + y_converge; 
+        }
+    }
+    
     void jump()
     {
-        if (isGrounded())
+        if (isGrounded() )
         {
-            rb.AddForce(new Vector2(0, speedJump), ForceMode2D.Impulse);
+            Debug.Log("regular jump");
+            rb.AddForce(new Vector2(0.0f, speedJump), ForceMode2D.Impulse);
             soundManager.PlayJumpSound();
+        }
+        if(wallClimbGraceTimer > 0.0f && latest_activation == false){ // left wall jump
+            Debug.Log("Jump left wall");
+            rb.AddForce(new Vector2(speedJump*0.8f, speedJump*0.8f), ForceMode2D.Impulse);
+            wallClimbTimout = 10.0f;
+            wallClimbReady[0] = false; 
+            wallClimbGraceTimer = 0;
+        }
+        if(wallClimbGraceTimer > 0.0f && latest_activation == true){ // right wall jump
+            Debug.Log("Jump right wall");
+            rb.AddForce(new Vector2(-speedJump*0.8f, speedJump*0.8f), ForceMode2D.Impulse);
+            wallClimbTimout = 10.0f;
+            wallClimbReady[1] = false; 
+                        wallClimbGraceTimer = 0;
+
         }
     }
     void fire_bullet()
@@ -163,8 +263,10 @@ public class player : MonoBehaviour
         soundManager.PlayShootSound();
     }
     void try_change_world(){
-        if(switchCharge >= SwitchCost){
-            update_switch_ui_bar(-SwitchCost);
+        Debug.Log("try change world");
+        if(EnergyBar.getCharge() >= EnergyBar.SwitchCost){
+            Debug.Log("Success");
+            EnergyBar.update_switch_ui_bar(-EnergyBar.SwitchCost);
             change_world();
         }
     }
@@ -193,12 +295,12 @@ public class player : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(boxCollider2d.bounds.center, Vector2.down, boxCollider2d.bounds.extents.y + 0.1f, layerMask);
         if (hit.collider != null)
         {
-            Debug.Log(hit.collider.tag);
-            if (hit.collider.tag == "platform")
+            if (hit.collider.tag == "platform" || hit.collider.tag == "Tile")
             {
                 animator.SetBool("isJumping", false);
                 return true;
             }
+            
         }
         //Debug.DrawRay(boxCollider2d.bounds.center, Vector2.down * (boxCollider2d.bounds.extents.y + 0.1f));
 
@@ -207,16 +309,29 @@ public class player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "platform" || other.gameObject.tag == "box")
-        {
+        if (other.gameObject.tag == "platform" || other.gameObject.tag == "box" || other.gameObject.tag == "Tile"){
+        
             soundManager.PlayLandingSound();
-        }
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
 
+            if(!isGrounded()){
+                RaycastHit2D hit_left = Physics2D.Raycast(boxCollider2d.bounds.center, Vector2.left, boxCollider2d.bounds.extents.x + 0.2f, ~(LayerMask.GetMask("PlayerLayer")));
+                RaycastHit2D hit_right = Physics2D.Raycast(boxCollider2d.bounds.center, Vector2.right, boxCollider2d.bounds.extents.x + 0.2f, ~(LayerMask.GetMask("PlayerLayer")));
+
+                wallClimbReady[0] = hit_left.collider != null && (wallClimbTimout <= 0.5f || latest_activation == true);
+                wallClimbReady[1] = hit_right.collider != null && (wallClimbTimout <= 0.5f || latest_activation == false);
+            }
+        }
     }
     private void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.tag == "platform")
         {
+        }
+        if (other.gameObject.tag == "Tile")
+        {
+            wallClimbReady[0] = false;
+            wallClimbReady[1] = false;
         }
 
     }
