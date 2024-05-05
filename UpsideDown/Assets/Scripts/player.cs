@@ -154,7 +154,6 @@ public class player : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            animator.SetBool("isJumping", true);
             jump();
         }
 
@@ -273,6 +272,8 @@ public class player : MonoBehaviour
             soundManager.PlayJumpSound();
         }else{
             if(wallClimbGraceTimer > 0.0f && latest_activation == "left"){ // left wall jump
+            animator.SetBool("isJumping", true);
+            soundManager.PlayJumpSound();
             Debug.Log("Jump left wall");
             rb.AddForce(new Vector2(speedJump*0.2f, speedJump*0.8f), ForceMode2D.Impulse);
             wallClimbTimout = 10.0f;
@@ -280,6 +281,7 @@ public class player : MonoBehaviour
             wallClimbGraceTimer = 0;
             }
             if(wallClimbGraceTimer > 0.0f && latest_activation == "right"){ // right wall jump
+                animator.SetBool("isJumping", true);
                 Debug.Log("Jump right wall");
                 rb.AddForce(new Vector2(-speedJump*0.2f, speedJump*0.8f), ForceMode2D.Impulse);
                 wallClimbTimout = 10.0f;
@@ -287,7 +289,6 @@ public class player : MonoBehaviour
                 wallClimbGraceTimer = 0;
             }
         }
-        
     }
     void fire_bullet()
     {
