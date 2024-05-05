@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 using Unity.Burst.CompilerServices;
 using System;
 using TMPro;
-using System;
 
 
 public class player : MonoBehaviour
@@ -31,11 +30,12 @@ public class player : MonoBehaviour
     public GameObject switchEnergy;
     private SwitchBarUIBar EnergyBar;
 
+    private bool[] wallNextTo;
     private bool[] wallClimbReady;
     private bool[] wallClimbActive;
     private float wallClimbTimout;
     private float wallClimbGraceTimer;
-    private bool latest_activation; // false left, true right
+    private string latest_activation; 
 
     public float wallGlideSpeed;
 
@@ -48,6 +48,9 @@ public class player : MonoBehaviour
 
     public TextMeshProUGUI bulletText; 
     private int currentBullets = 0; 
+
+    public GameObject music_m;
+    private MusicManager musicManagerObject;
 
     public enum WorldType
     {
@@ -70,11 +73,12 @@ public class player : MonoBehaviour
         horizontalVelocity = new Vector2(0.0f,0.0f);
         horizontalIndex = new int[]{0,0};
 
+        wallNextTo = new bool[2]{false,false}; // [0] left [1] right
         wallClimbReady = new bool[2]{false,false}; // [0] left [1] right
         wallClimbActive = new bool[2]{false,false}; // [0] left [1] right
         wallClimbTimout = 0;
         wallClimbGraceTimer = 0;
-        latest_activation = false;
+        latest_activation = "left";
 
         EnergyBar = switchEnergy.GetComponent<SwitchBarUIBar>();
 
@@ -102,6 +106,8 @@ public class player : MonoBehaviour
         camera_controller.update_current_world(current_world);
         box_controller.update_current_world(current_world);
 
+        musicManagerObject = music_m.GetComponent<MusicManager>();
+
     }
 
     void Update()
@@ -116,7 +122,6 @@ public class player : MonoBehaviour
                 change_world();
             }
 
-            Debug.Log("calling");
             healthManager.ModifyHealth(-1);
             return;
         }
@@ -171,7 +176,7 @@ public class player : MonoBehaviour
         {
             wallClimbGraceTimer = 15.0f;
             wallClimbActive[0] = true; 
-            latest_activation = false;
+            latest_activation = "left";
         }else{
             wallClimbActive[0] = false;
         }
@@ -179,47 +184,63 @@ public class player : MonoBehaviour
         {
             wallClimbGraceTimer = 15.0f;
             wallClimbActive[1] = true;
-            latest_activation = true;
+            latest_activation = "right";
             
         }else{
             wallClimbActive[1] = false;
         }
         if((wallClimbActive[0] || wallClimbActive[1]) && rb.drag != wallGlideSpeed){
             rb.drag = wallGlideSpeed;
+            Debug.Log("Active wall glide");
         }
         if(rb.drag == wallGlideSpeed && !wallClimbActive[0] && !wallClimbActive[1]){
             rb.drag = 0.05f;
+            Debug.Log("Non-Active wall glide");
         }
+
     }
     void FixedUpdate(){
 
-        horizontalMovement = Input.GetAxis("Horizontal");
+        horizontalMovement = Input.GetAxis("Horizontal") * speed;
 
-        if (Input.GetAxisRaw("Horizontal") < 0)
-        {
-            horizontalMovement *= accelerationCurve[Math.Min(accelerationCurve.Length -1, horizontalIndex[0])];
-            horizontalIndex[0] += 1;
-            Debug.Log(horizontalMovement);
-        }else{
-            horizontalIndex[0] = 0;
-        }
-        if (Input.GetAxisRaw("Horizontal") > 0 )
-        {
-            horizontalMovement *= accelerationCurve[Math.Min(accelerationCurve.Length -1, horizontalIndex[1])];
-            horizontalIndex[1] += 1;
-        }else{
-            horizontalIndex[1] = 0;
-        }
+        // if (Input.GetAxisRaw("Horizontal") < 0)
+        // {
+        //     horizontalMovement *= accelerationCurve[Math.Min(accelerationCurve.Length -1, horizontalIndex[0])];
+        //     horizontalIndex[0] += 1;
+        //     Debug.Log(horizontalMovement);
+        // }else{
+        //     horizontalIndex[0] = 0;
+        // }
+        // if (Input.GetAxisRaw("Horizontal") > 0 )
+        // {
+        //     horizontalMovement *= accelerationCurve[Math.Min(accelerationCurve.Length -1, horizontalIndex[1])];
+        //     horizontalIndex[1] += 1;
+        // }else{
+        //     horizontalIndex[1] = 0;
+        // }
 
         //if(!isGrounded()){
         //    horizontalMovement *= 0.7f;
         //}
+        if(wallNextTo[0]){
+            if(horizontalMovement >= 0.0f){
+                rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
+            }
+        }
+        if(wallNextTo[1]){
+            if(horizontalMovement <= 0.0f){
+                rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
+            }
+        }
+        if(!wallNextTo[0] && !wallNextTo[1]){
+            rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
+        }
+        
 
-        //rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
-        rb.AddForce(new Vector2(horizontalMovement, 0), ForceMode2D.Force);
+        //rb.AddForce(new Vector2(horizontalMovement, 0), ForceMode2D.Force);
 
-        float maxHorizontalSpeed = 10f; 
-        rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxHorizontalSpeed, maxHorizontalSpeed), rb.velocity.y);
+        //float maxHorizontalSpeed = 10f; 
+        //rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxHorizontalSpeed, maxHorizontalSpeed), rb.velocity.y);
 
 
         if (wallClimbTimout > 0)
@@ -248,25 +269,25 @@ public class player : MonoBehaviour
     {
         if (isGrounded() )
         {
-            Debug.Log("regular jump");
             rb.AddForce(new Vector2(0.0f, speedJump), ForceMode2D.Impulse);
             soundManager.PlayJumpSound();
-        }
-        if(wallClimbGraceTimer > 0.0f && latest_activation == false){ // left wall jump
+        }else{
+            if(wallClimbGraceTimer > 0.0f && latest_activation == "left"){ // left wall jump
             Debug.Log("Jump left wall");
-            rb.AddForce(new Vector2(speedJump*0.8f, speedJump*0.8f), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(speedJump*0.2f, speedJump*0.8f), ForceMode2D.Impulse);
             wallClimbTimout = 10.0f;
             wallClimbReady[0] = false; 
             wallClimbGraceTimer = 0;
+            }
+            if(wallClimbGraceTimer > 0.0f && latest_activation == "right"){ // right wall jump
+                Debug.Log("Jump right wall");
+                rb.AddForce(new Vector2(-speedJump*0.2f, speedJump*0.8f), ForceMode2D.Impulse);
+                wallClimbTimout = 10.0f;
+                wallClimbReady[1] = false; 
+                wallClimbGraceTimer = 0;
+            }
         }
-        if(wallClimbGraceTimer > 0.0f && latest_activation == true){ // right wall jump
-            Debug.Log("Jump right wall");
-            rb.AddForce(new Vector2(-speedJump*0.8f, speedJump*0.8f), ForceMode2D.Impulse);
-            wallClimbTimout = 10.0f;
-            wallClimbReady[1] = false; 
-                        wallClimbGraceTimer = 0;
-
-        }
+        
     }
     void fire_bullet()
     {
@@ -289,11 +310,13 @@ public class player : MonoBehaviour
         switch (current_world)
         {
             case "good":
+                musicManagerObject.playWorld("bad");
                 current_world = "bad";
                 transform.position += new Vector3(0, -20, 0);
                 animator.SetBool("good_world", false);
                 break;
             case "bad":
+                musicManagerObject.playWorld("good");
                 current_world = "good";
                 transform.position += new Vector3(0, 20, 0);
                 animator.SetBool("good_world", true);
@@ -331,8 +354,14 @@ public class player : MonoBehaviour
                 RaycastHit2D hit_left = Physics2D.Raycast(boxCollider2d.bounds.center, Vector2.left, boxCollider2d.bounds.extents.x + 0.2f, ~(LayerMask.GetMask("PlayerLayer")));
                 RaycastHit2D hit_right = Physics2D.Raycast(boxCollider2d.bounds.center, Vector2.right, boxCollider2d.bounds.extents.x + 0.2f, ~(LayerMask.GetMask("PlayerLayer")));
 
-                wallClimbReady[0] = hit_left.collider != null && (wallClimbTimout <= 0.5f || latest_activation == true);
-                wallClimbReady[1] = hit_right.collider != null && (wallClimbTimout <= 0.5f || latest_activation == false);
+                // not set to only tag="tile" now, which can cause a problem in the future
+                wallClimbReady[0] = hit_left.collider != null && (wallClimbTimout <= 0.5f || latest_activation == "right");
+                wallClimbReady[1] = hit_right.collider != null && (wallClimbTimout <= 0.5f || latest_activation == "left");
+
+                wallNextTo[0] = hit_left.collider != null;
+                wallNextTo[1] = hit_right.collider != null;
+                
+                Debug.Log(wallNextTo[0]);
             }
         }
     }
@@ -345,6 +374,8 @@ public class player : MonoBehaviour
         {
             wallClimbReady[0] = false;
             wallClimbReady[1] = false;
+            wallNextTo[0] = false;
+            wallNextTo[1] = false;
         }
 
     }
