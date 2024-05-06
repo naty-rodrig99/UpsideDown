@@ -17,7 +17,7 @@ public class player : MonoBehaviour
     public float speed;
     public float speedJump;
     public Animator animator;
-    string current_world;
+    public static string current_world;
 
     public GameObject Camera;
     PlayerCamera camera_controller;
@@ -82,7 +82,7 @@ public class player : MonoBehaviour
 
         initial_pos = transform.position;
 
-        looking_direction = 1;
+        looking_direction = -1;
         rb = GetComponent<Rigidbody2D>();
         camera_controller = Camera.GetComponent<PlayerCamera>();
         box_controller = Box.GetComponent<BoxScript>();
