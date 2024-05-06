@@ -27,41 +27,9 @@ public class Enemies : MonoBehaviour
 
     }
 
-    void Update()
-    {
-        if ((player.current_world == "good" && this.transform.position.y < -14) || (player.current_world == "bad" && this.transform.position.y < -33))
-        {
-            transform.position = initial_pos;
-            if (player.current_world == "bad")
-            {
-                if (player.current_world == "good")
-                {
-                    this.transform.position += new Vector3(0, -20, 0);
-                }
-                else if (player.current_world == "bad")
-                {
-                    this.transform.position += new Vector3(0, 20, 0);
-                }
-            }
-            return;
-        } 
-    } 
-
         // Update is called once per frame
         void FixedUpdate()
-    {
-        if (player.current_world == "good")
         {
-            this.transform.position += new Vector3(0, -20, 0);
-            mode = "goodWorld";
-        }
-        else if (player.current_world == "bad")
-        {
-            this.transform.position += new Vector3(0, 20, 0);
-            mode = "badWorld";
-        }
-
-
         switch (mode)
         {
             case "goodWorld":
@@ -117,5 +85,19 @@ public class Enemies : MonoBehaviour
                 break;
         }
             
+    }
+
+    public void switchWorld(string world)
+    {
+        if (world == "good")
+        {
+            this.transform.position += new Vector3(0, 20, 0);
+            mode = "goodWorld";
+        }
+        else if (world == "bad")
+        {
+            this.transform.position += new Vector3(0, -20, 0);
+            mode = "badWorld";
+        }
     }
 }

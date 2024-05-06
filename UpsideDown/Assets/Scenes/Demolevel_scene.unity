@@ -7379,7 +7379,7 @@ GameObject:
   - component: {fileID: 1720402127}
   m_Layer: 6
   m_Name: Monkey
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8961,6 +8961,7 @@ GameObject:
   - component: {fileID: 2002642676}
   - component: {fileID: 2002642675}
   - component: {fileID: 2002642677}
+  - component: {fileID: 2002642678}
   m_Layer: 6
   m_Name: Tiger
   m_TagString: Untagged
@@ -9135,12 +9136,27 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2002642671}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76172fcd597553146966a267c156f6d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tigerAnimator: {fileID: 2002642672}
+  main_player: {fileID: 2113055463}
+  speed: 1
+--- !u!114 &2002642678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002642671}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb6acb2a4d7a0aa4fb4c303961853a76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monkeyAnimator: {fileID: 2002642672}
   main_player: {fileID: 2113055463}
   speed: 1
 --- !u!1 &2013340358
@@ -10605,6 +10621,10 @@ PrefabInstance:
       propertyPath: Camera
       value: 
       objectReference: {fileID: 519420028}
+    - target: {fileID: 88892278157403613, guid: 3d0a69fd1819b424ab860fbcddb2db39, type: 3}
+      propertyPath: monkey
+      value: 
+      objectReference: {fileID: 1720402122}
     - target: {fileID: 88892278157403613, guid: 3d0a69fd1819b424ab860fbcddb2db39, type: 3}
       propertyPath: animator
       value: 

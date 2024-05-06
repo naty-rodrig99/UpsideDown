@@ -17,7 +17,7 @@ public class player : MonoBehaviour
     public float speed;
     public float speedJump;
     public Animator animator;
-    public static string current_world;
+    string current_world;
 
     public GameObject Camera;
     PlayerCamera camera_controller;
@@ -47,7 +47,11 @@ public class player : MonoBehaviour
 
 
     public TextMeshProUGUI bulletText; 
-    private int currentBullets = 0; 
+    private int currentBullets = 0;
+
+    Enemies enemy;
+    public GameObject monkey;
+    
 
     public enum WorldType
     {
@@ -79,6 +83,8 @@ public class player : MonoBehaviour
         EnergyBar = switchEnergy.GetComponent<SwitchBarUIBar>();
 
         boxCollider2d = GetComponent<BoxCollider2D>();
+
+        enemy = monkey.GetComponent<Enemies>();
 
         initial_pos = transform.position;
 
@@ -294,11 +300,13 @@ public class player : MonoBehaviour
                 current_world = "bad";
                 transform.position += new Vector3(0, -20, 0);
                 animator.SetBool("good_world", false);
+                enemy.switchWorld("bad");
                 break;
             case "bad":
                 current_world = "good";
                 transform.position += new Vector3(0, 20, 0);
                 animator.SetBool("good_world", true);
+                enemy.switchWorld("good");
                 break;
         }
         camera_controller.update_current_world(current_world);
