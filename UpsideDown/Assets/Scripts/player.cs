@@ -48,6 +48,7 @@ public class player : MonoBehaviour
 
     public TextMeshProUGUI bulletText; 
     private int currentBullets = 0; 
+    private int currentHealth = 3;
 
     public enum WorldType
     {
@@ -116,8 +117,8 @@ public class player : MonoBehaviour
                 change_world();
             }
 
-            Debug.Log("calling");
-            healthManager.ModifyHealth(-1);
+            //healthManager.ModifyHealth(-1);
+            ManageHealth(-1);
             return;
         }
 
@@ -272,10 +273,15 @@ public class player : MonoBehaviour
     }
     void fire_bullet()
     {
+        if (currentBullets == 0)
+            return;
+
         GameObject bullet_instance = Instantiate(bullet, transform.position, Quaternion.identity);
         Bullet bullet_script = bullet_instance.GetComponent<Bullet>();
         bullet_script.set_direction(looking_direction); // sets direction of bullet, 1 right -1 left
         soundManager.PlayShootSound();
+
+        ManageBullets(-1);
     }
     void try_change_world(){
         Debug.Log("try change world");
@@ -351,13 +357,17 @@ public class player : MonoBehaviour
 
     }
 
-    public void AddBullets(int amount)
+    public void ManageBullets(int amount)
     {
         currentBullets += amount;
-    }
-
-    public void UpdateBulletUI()
-    {
         bulletText.text = currentBullets.ToString();
     }
+
+    public void ManageHealth(int amount)
+    {
+        currentHealth += amount;
+        healthManager.ModifyHealth(currentHealth);
+        //return currentHealth;
+    }
+
 }

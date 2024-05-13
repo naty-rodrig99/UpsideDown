@@ -27,10 +27,7 @@ public class BulletCollect : MonoBehaviour
             SoundManager soundManager = playerController.GetComponent<SoundManager>();  
             if (playerController != null)
             {
-                playerController.AddBullets(bulletCount);
-
-                // Update UI element with new bullet count
-                playerController.UpdateBulletUI();
+                playerController.ManageBullets(bulletCount);
             }
 
             // Destroy the collectible bullet GameObject
