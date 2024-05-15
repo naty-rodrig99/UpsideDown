@@ -20,7 +20,6 @@ public class Bullet : MonoBehaviour
     public void set_direction(int dir)
     {
         direction = dir;
-        Debug.Log(direction);
     }
 
     // Update is called once per frame

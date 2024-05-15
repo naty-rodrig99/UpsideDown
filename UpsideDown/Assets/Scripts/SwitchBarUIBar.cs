@@ -8,7 +8,6 @@ public class SwitchBarUIBar : MonoBehaviour
     public GameObject backgroundBar;
     public GameObject thresholdLine;
 
-    public GameObject Player;
 
     double switchCharge;
     public double SwitchCost = 40;
@@ -21,7 +20,6 @@ public class SwitchBarUIBar : MonoBehaviour
 
     void Start()
     {
-        player playerScript = Player.GetComponent<player>();
 
         renderer = dynamicBar.GetComponent<Renderer>();
         renderer.material.color = Color.blue; 
@@ -38,6 +36,13 @@ public class SwitchBarUIBar : MonoBehaviour
 
     public double getCharge(){
         return switchCharge;
+    }
+
+    public bool isReady(){
+        return getCharge() >= SwitchCost;
+    }
+    public void useEnergy(){
+        switchCharge -= SwitchCost;
     }
 
     void FixedUpdate(){

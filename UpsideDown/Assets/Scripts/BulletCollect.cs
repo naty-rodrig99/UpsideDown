@@ -23,7 +23,7 @@ public class BulletCollect : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Increase player's bullet count
-            player playerController = other.GetComponent<player>();
+            player_script playerController = other.GetComponent<player_script>();
             SoundManager soundManager = playerController.GetComponent<SoundManager>();  
             if (playerController != null)
             {

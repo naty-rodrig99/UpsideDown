@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using gamespace;
+
 
 public class MusicManager : MonoBehaviour
 {
@@ -15,8 +17,27 @@ public class MusicManager : MonoBehaviour
 
     private string active_song;
 
+    void OnEnable()
+    {
+        WorldController.OnWorldChanged += UpdateWorld;
+    }
+    void OnDisable()
+    {
+        WorldController.OnWorldChanged -= UpdateWorld;
+    }
+    
+    void UpdateWorld(WorldType type){
+        if(type == WorldType.GoodWorld){
+            playWorld("good");
+        }
+        if(type == WorldType.BadWorld){
+            playWorld("bad");
+        }
+    }
+
     void Start()
     {
+
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.loop = true;
 
@@ -48,7 +69,6 @@ public class MusicManager : MonoBehaviour
             active_song = "bad";
             audioSource.clip = bad_song;
             if((float)bad_song_timer < bad_song.length - 10.0f){
-                Debug.Log(bad_song_timer);
                 audioSource.time = bad_song_timer;
             }
             else{

@@ -42,7 +42,6 @@ public class Enemies : MonoBehaviour
                 if(hit.collider == null)
                 {
                     direction = direction * -1;
-                    Debug.Log(direction);
                 }
                 if(Mathf.Abs(player.transform.position.x - this.transform.position.x) < 4)
                 {
