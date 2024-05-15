@@ -9,6 +9,7 @@ TagManager:
   - point
   - Tile
   - health
+  - Monster
   layers:
   - Default
   - TransparentFX
