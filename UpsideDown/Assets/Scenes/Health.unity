@@ -7455,7 +7455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monkeyAnimator: {fileID: 1720402124}
-  player: {fileID: 2113055463}
+  main_player: {fileID: 0}
   speed: 1
 --- !u!95 &1720402124
 Animator:
@@ -10467,6 +10467,10 @@ PrefabInstance:
       propertyPath: Camera
       value: 
       objectReference: {fileID: 519420028}
+    - target: {fileID: 88892278157403613, guid: 3d0a69fd1819b424ab860fbcddb2db39, type: 3}
+      propertyPath: monkey
+      value: 
+      objectReference: {fileID: 1720402122}
     - target: {fileID: 88892278157403613, guid: 3d0a69fd1819b424ab860fbcddb2db39, type: 3}
       propertyPath: animator
       value: 
