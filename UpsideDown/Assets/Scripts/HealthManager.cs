@@ -5,22 +5,40 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
+    public int maxHearts = 5;
+    private int currentHearts = 3;
+
     public Image[] heartIcons;
-    public int maxHearts = 3;
-    private int currentHearts;
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentHearts = maxHearts;
         UpdateHeartIcons();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
     }
 
     void UpdateHeartIcons()
     {
         for (int i = 0; i < heartIcons.Length; i++)
         {
+
             if (i < currentHearts)
+            {
+                heartIcons[i].sprite = fullHeart;
+            }
+            else
+            {
+                heartIcons[i].sprite = emptyHeart;
+            }
+
+            if (i < maxHearts)
             {
                 heartIcons[i].enabled = true;
             }
@@ -33,22 +51,27 @@ public class HealthManager : MonoBehaviour
 
     public void ModifyHealth(int amount)
     {
-        currentHearts += amount;
+        currentHearts = amount;
         currentHearts = Mathf.Clamp(currentHearts, 0, maxHearts);
         UpdateHeartIcons();
     }
 
-    public void CollectHeart()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (currentHearts < maxHearts)
+        if (other.CompareTag("Player"))
         {
-            currentHearts++;
-            UpdateHeartIcons();
+            // Increase player's heart count
+            player playerController = other.GetComponent<player>();
+            SoundManager soundManager = playerController.GetComponent<SoundManager>();
+            if (playerController != null)
+            {
+                playerController.ManageHealth(1);
+            }
+
+            // Destroy the collectible bullet GameObject
+            soundManager.PlayCollectPointSound();
+            Destroy(gameObject);
         }
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
