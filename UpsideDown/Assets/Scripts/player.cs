@@ -47,7 +47,11 @@ public class player : MonoBehaviour
 
 
     public TextMeshProUGUI bulletText; 
-    private int currentBullets = 0; 
+    private int currentBullets = 0;
+
+    Enemies enemy;
+    public GameObject monkey;
+    
 
     public GameObject music_m;
     private MusicManager musicManagerObject;
@@ -84,9 +88,11 @@ public class player : MonoBehaviour
 
         boxCollider2d = GetComponent<BoxCollider2D>();
 
+        enemy = monkey.GetComponent<Enemies>();
+
         initial_pos = transform.position;
 
-        looking_direction = 1;
+        looking_direction = -1;
         rb = GetComponent<Rigidbody2D>();
         camera_controller = Camera.GetComponent<PlayerCamera>();
         box_controller = Box.GetComponent<BoxScript>();
@@ -315,12 +321,14 @@ public class player : MonoBehaviour
                 current_world = "bad";
                 transform.position += new Vector3(0, -20, 0);
                 animator.SetBool("good_world", false);
+                enemy.switchWorld("bad");
                 break;
             case "bad":
                 musicManagerObject.playWorld("good");
                 current_world = "good";
                 transform.position += new Vector3(0, 20, 0);
                 animator.SetBool("good_world", true);
+                enemy.switchWorld("good");
                 break;
         }
         camera_controller.update_current_world(current_world);
