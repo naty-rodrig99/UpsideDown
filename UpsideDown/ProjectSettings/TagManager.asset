@@ -8,6 +8,8 @@ TagManager:
   - Box
   - point
   - Tile
+  - health
+  - Monster
   layers:
   - Default
   - TransparentFX
