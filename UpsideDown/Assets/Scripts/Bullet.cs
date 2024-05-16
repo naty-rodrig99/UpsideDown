@@ -43,6 +43,11 @@ public class Bullet : MonoBehaviour
         }
         if (other.gameObject.tag == "Monster")
         {
+            Enemies monster = other.gameObject.GetComponent<Enemies>();
+            if (monster != null)
+            {
+                monster.hitByBullet();
+            }            
             hit();
         }
 

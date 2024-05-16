@@ -61,15 +61,20 @@ public class player_script : MonoBehaviour
     void OnEnable()
     {
         WorldController.OnWorldChanged += UpdateWorld;
+        WorldController.OnPlayerDirectionChanged += UpdateDir;
     }
     void OnDisable()
     {
         WorldController.OnWorldChanged -= UpdateWorld;
+        WorldController.OnPlayerDirectionChanged -= UpdateDir;
     }
-    
     void UpdateWorld(WorldType type){
         change_world(type);
     }
+    void UpdateDir(int dir){
+        looking_direction = dir;
+    }
+    
 
     void init_world(){
         Debug.Log("test");

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+using gamespace;
+
 public class Enemies : MonoBehaviour
 {
     public Animator monkeyAnimator;
@@ -12,11 +14,38 @@ public class Enemies : MonoBehaviour
     string mode;
     int direction;
     public float speed;
+    public int init_health = 3;
+    private int _health;
     private Vector3 initial_pos;
+    WorldType current_world;
+
+    void OnEnable()
+    {
+        WorldController.OnWorldChanged += UpdateWorld;
+    }
+    void OnDisable()
+    {
+        WorldController.OnWorldChanged -= UpdateWorld;
+    }
+    void UpdateWorld(WorldType type){
+        current_world = type;
+        switchWorld(type);
+    }
+
+    public void hitByBullet(){
+        _health -= 1;
+        if(_health <= 0) die();
+    }
+    void die(){
+        Destroy(gameObject);
+    }
+
 
     // Start is called before the first frame update
     void Start()
     {
+        _health = init_health;
+        current_world = WorldType.GoodWorld;
         initial_pos = transform.position;
         //monkeyAnimator.SetBool("goodWorld", false);
         rb = GetComponent<Rigidbody2D>();
@@ -87,14 +116,14 @@ public class Enemies : MonoBehaviour
             
     }
 
-    public void switchWorld(string world)
+    public void switchWorld(WorldType world)
     {
-        if (world == "good")
+        if (world == WorldType.GoodWorld)
         {
             this.transform.position += new Vector3(0, 20, 0);
             mode = "goodWorld";
         }
-        else if (world == "bad")
+        else if (world == WorldType.BadWorld)
         {
             this.transform.position += new Vector3(0, -20, 0);
             mode = "badWorld";

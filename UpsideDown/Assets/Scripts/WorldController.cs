@@ -21,6 +21,7 @@ public static class WorldController
 
     //public event Action<WorldType> OnWorldChanged;
     public static Action<WorldType> OnWorldChanged;
+    public static Action<int> OnPlayerDirectionChanged;
 
     private static WorldType _current_world;
     private static  WorldType current_world

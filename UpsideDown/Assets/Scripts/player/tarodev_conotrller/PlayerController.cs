@@ -23,8 +23,24 @@ namespace TarodevController
 
         private float _time;
 
+        private static int _looking_direction;
+        private static int looking_direction
+        {
+            get { return _looking_direction; }
+            set
+            {
+                if (_looking_direction != value)
+                {
+                    _looking_direction = value;
+                    WorldController.OnPlayerDirectionChanged(_looking_direction);
+                }
+            }
+        }
+
         private void Awake()
         {
+            _looking_direction = 1;
+            WorldController.OnPlayerDirectionChanged(_looking_direction);
             _rb = GetComponent<Rigidbody2D>();
             _rb.freezeRotation = true;
             _col = GetComponent<CapsuleCollider2D>();
@@ -66,6 +82,8 @@ namespace TarodevController
             HandleJump();
             HandleDirection();
             HandleGravity();
+            if(_frameVelocity.x > 0.0f && looking_direction == -1) looking_direction = 1;
+            if(_frameVelocity.x < 0.0f && looking_direction == 1) looking_direction = -1;
             ApplyMovement();
         }
 
