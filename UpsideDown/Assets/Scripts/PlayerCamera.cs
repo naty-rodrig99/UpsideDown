@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using System;
 using gamespace;
 
@@ -12,6 +13,12 @@ public class PlayerCamera : MonoBehaviour
     WorldType current_world;
     float cameraZ;
     public GameObject[] Backgrounds;
+
+    public GameObject lightObject;
+    private Light2D LightGoodWorld;
+
+    public GameObject[] FlashlightsObj;
+    private Light2D[] Flashlights;
 
     public float cameraSpeed;
 
@@ -35,6 +42,23 @@ public class PlayerCamera : MonoBehaviour
         current_world = type;
         update_backgrounds();
         UpdateCameraYPos();
+        UpdateLight();
+    }
+    void UpdateLight(){
+        if(current_world == WorldType.GoodWorld){
+            LightGoodWorld.intensity = 1.0f;
+            foreach (Light2D light in Flashlights)
+            {
+                light.enabled = false;
+            }
+        } 
+        if(current_world == WorldType.BadWorld){
+            LightGoodWorld.intensity = 0.1f;
+            foreach (Light2D light in Flashlights)
+            {
+                light.enabled = true;
+            }
+        } 
     }
 
     void UpdateCameraYPos(){
@@ -52,6 +76,12 @@ public class PlayerCamera : MonoBehaviour
     
     void Start()
     {
+        LightGoodWorld = lightObject.GetComponent<Light2D>();
+        Flashlights = new Light2D[FlashlightsObj.Length];
+        for (int i = 0; i < FlashlightsObj.Length; i++)
+        {
+            Flashlights[i] = FlashlightsObj[i].GetComponent<Light2D>();
+        }
         cameraZ = transform.position.z;
         transform.position = new Vector3(player.transform.position.x, CAM_SETTINGS.good_world_cam_y, cameraZ);
 

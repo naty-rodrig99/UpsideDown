@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d959781799e04508896b7a4a0478857, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 17.77
   bullet_expl_particle: {fileID: 1647647633132828118, guid: 2a89f061ab0f64b7db16ec2ed4cdcb0c, type: 3}
   wobbleAmplitude: 0.69
   wobbleFrequency: 14.36
