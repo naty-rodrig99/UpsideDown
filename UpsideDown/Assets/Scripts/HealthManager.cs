@@ -12,10 +12,14 @@ public class HealthManager : MonoBehaviour
     public Sprite fullHeart;
     public Sprite emptyHeart;
 
+    private player_script playerScript;
+
     // Start is called before the first frame update
     void Start()
     {
         UpdateHeartIcons();
+        GameObject player = GameObject.Find("Main_Character");
+        playerScript = player.GetComponent<player_script>();
     }
 
     // Update is called once per frame
@@ -60,16 +64,12 @@ public class HealthManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Increase player's heart count
-            player playerController = other.GetComponent<player>();
-            SoundManager soundManager = playerController.GetComponent<SoundManager>();
-            if (playerController != null)
-            {
-                playerController.ManageHealth(1);
-            }
-
-            // Destroy the collectible bullet GameObject
-            soundManager.PlayCollectPointSound();
+            //Increase player's heart count
+            //SoundManager soundManager = playerController.GetComponent<SoundManager>();
+            
+            playerScript.Health += 1;
+            //Destroy the collectible bullet GameObject
+            //soundManager.PlayCollectPointSound();
             Destroy(gameObject);
         }
     }

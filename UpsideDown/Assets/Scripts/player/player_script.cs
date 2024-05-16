@@ -15,6 +15,13 @@ public class player_script : MonoBehaviour
 {
     //public Animator animator;
 
+    private int _health;
+    public int Health
+    {
+        get { return _health; }
+        set { _health = value; }
+    }
+
     public GameObject Camera;
     PlayerCamera camera_controller;
 
