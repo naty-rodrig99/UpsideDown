@@ -9,7 +9,8 @@ namespace gamespace
     public enum WorldType
     {
         GoodWorld,
-        BadWorld
+        BadWorld,
+        NOWORLD
     }
 }
 
@@ -36,6 +37,7 @@ public static class WorldController
     }
 
     public static void init(){
+        _current_world = WorldType.NOWORLD;
         switchEnergy = GameObject.Find("SwitchChargeHUD");
         EnergyBar = switchEnergy.GetComponent<SwitchBarUIBar>();
     }
@@ -58,7 +60,6 @@ public static class WorldController
     }
     public static void change_world()
     {
-        Debug.Log("change world");
         switch (current_world)
         {
             case WorldType.GoodWorld:

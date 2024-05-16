@@ -51,8 +51,22 @@ public class player_script : MonoBehaviour
 
     }
 
+    void OnEnable()
+    {
+        WorldController.OnWorldChanged += UpdateWorld;
+    }
+    void OnDisable()
+    {
+        WorldController.OnWorldChanged -= UpdateWorld;
+    }
+    
+    void UpdateWorld(WorldType type){
+        change_world(type);
+    }
+
     void init_world(){
         Debug.Log("test");
+
         WorldController.UpdateCurrentWorld(start_world);
 
         // if (start_world == WorldType.GoodWorld)
@@ -115,6 +129,17 @@ public class player_script : MonoBehaviour
         if(WorldController.GetEnergyBar().isReady()){
             WorldController.GetEnergyBar().useEnergy();
             WorldController.change_world();
+        }
+    }
+
+    void change_world(WorldType world){       
+        switch (world){
+            case WorldType.BadWorld:
+                transform.position += new Vector3(0, -20, 0);
+                break;
+            case WorldType.GoodWorld:
+                transform.position += new Vector3(0, 20, 0);
+                break;
         }
     }
 
