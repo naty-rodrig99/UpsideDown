@@ -1,31 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using gamespace;
+
 
 public class PlayerCamera : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject player;
-    private string current_world;
+    WorldType current_world;
     float cameraZ;
     public GameObject[] Backgrounds;
+
+    public float cameraSpeed;
 
     public struct CAM_SETTINGS
     {
         public const float good_world_cam_y = -7.35f;
         public const float bad_world_cam_y = -7.35f - 20f;
     }
+
+    void OnEnable()
+    {
+        WorldController.OnWorldChanged += UpdateWorld;
+    }
+    void OnDisable()
+    {
+        WorldController.OnWorldChanged -= UpdateWorld;
+    }
+    
+    void UpdateWorld(WorldType type){
+        Debug.Log("playercamer update world");
+        current_world = type;
+        update_backgrounds();
+        UpdateCameraYPos();
+    }
+
+    void UpdateCameraYPos(){
+        if(current_world == WorldType.GoodWorld){
+            transform.position = new Vector3(transform.position.x, CAM_SETTINGS.good_world_cam_y, cameraZ);
+        }
+        if(current_world == WorldType.BadWorld){
+            transform.position = new Vector3(transform.position.x, CAM_SETTINGS.bad_world_cam_y, cameraZ);
+        }
+    }
+
+    void Awake(){
+    }
+
+    
     void Start()
     {
         cameraZ = transform.position.z;
-        update_current_world("good");
+        transform.position = new Vector3(player.transform.position.x, CAM_SETTINGS.good_world_cam_y, cameraZ);
+
     }
-    public void update_current_world(string value)
+    public void update_backgrounds()
     {
-        current_world = value;
-
-
-        if (current_world == "good")
+        if (current_world == WorldType.GoodWorld)
         {
             Backgrounds[0].SetActive(true);
             Backgrounds[1].SetActive(false);
@@ -37,16 +70,23 @@ public class PlayerCamera : MonoBehaviour
         }
 
     }
-    void Update()
+
+    void FixedUpdate()
     {
+        handleCameraMovement();
+    }
+
+    void handleCameraMovement(){
         Vector2 player_position = player.transform.position;
-        if (current_world == "good")
-        {
-            transform.position = new Vector3(player_position.x, CAM_SETTINGS.good_world_cam_y, cameraZ);
+        float delta_x;
+
+        if(Mathf.Abs(player_position.x - transform.position.x) < 0.3f){
+            delta_x = 0;
         }
-        if (current_world == "bad")
-        {
-            transform.position = new Vector3(player_position.x, CAM_SETTINGS.bad_world_cam_y, cameraZ);
+        else{
+            delta_x = ((player_position.x - transform.position.x) * Mathf.Abs(player_position.x - transform.position.x)) / (100.0f/cameraSpeed);
         }
+
+        transform.position = new Vector3(transform.position.x + delta_x, transform.position.y, cameraZ);
     }
 }
