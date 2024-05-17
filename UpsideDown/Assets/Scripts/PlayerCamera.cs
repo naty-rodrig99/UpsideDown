@@ -38,7 +38,6 @@ public class PlayerCamera : MonoBehaviour
     }
     
     void UpdateWorld(WorldType type){
-        Debug.Log("playercamer update world");
         current_world = type;
         update_backgrounds();
         UpdateCameraYPos();
@@ -128,7 +127,7 @@ public class PlayerCamera : MonoBehaviour
             delta_x = 0;
         }
         else{
-            delta_x = Math.Max(-20.0f, Mathf.Min(20.0f,((player_position.x - transform.position.x) * Mathf.Abs(player_position.x - transform.position.x)) / (100.0f/cameraSpeed)));
+            delta_x = Math.Max(-40.0f, Mathf.Min(40.0f,((player_position.x - transform.position.x) * Mathf.Abs(player_position.x - transform.position.x)) / (100.0f/cameraSpeed)));
         }
 
         transform.position = new Vector3(transform.position.x + delta_x, transform.position.y, cameraZ);

@@ -40,6 +40,11 @@ public class player_script : MonoBehaviour
     private Vector3 initial_pos;
     BoxCollider2D boxCollider2d;
 
+    public ParticleSystem shoot_particles_right;
+    public ParticleSystem shoot_particles_left;
+
+    public Vector3 localBulletOffset = new Vector3(0.0f, 0.0f, 0.0f);
+
     public SoundManager soundManager;
     //public HealthManager healthManager;
     private object console;
@@ -77,8 +82,6 @@ public class player_script : MonoBehaviour
     
 
     void init_world(){
-        Debug.Log("test");
-
         WorldController.UpdateCurrentWorld(start_world);
 
         // if (start_world == WorldType.GoodWorld)
@@ -116,7 +119,6 @@ public class player_script : MonoBehaviour
     void check_inputs(){
         if (Input.GetButtonDown("Fire2")) // change from good to bad
         {
-            Debug.Log("trying to change world");
             try_change_world();
         }
         if (Input.GetButtonDown("Fire1") && WorldController.IsWorldBad())
@@ -131,8 +133,13 @@ public class player_script : MonoBehaviour
     
     void fire_bullet()
     {
-        GameObject bullet_instance = Instantiate(bullet, transform.position, Quaternion.identity);
+        Vector3 localBulletOffset_new = new Vector3(localBulletOffset.x * looking_direction, localBulletOffset.y, localBulletOffset.y);
+        GameObject bullet_instance = Instantiate(bullet, transform.position + localBulletOffset_new, Quaternion.identity);
         Bullet bullet_script = bullet_instance.GetComponent<Bullet>();
+
+        if(looking_direction > 0.0f) shoot_particles_right.Play();
+        if(looking_direction < 0.0f) shoot_particles_left.Play();
+        
         bullet_script.set_direction(looking_direction); // sets direction of bullet, 1 right -1 left
         soundManager.PlayShootSound();
     }

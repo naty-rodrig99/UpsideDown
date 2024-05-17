@@ -36,7 +36,6 @@ public class Bullet : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("SOME COLLISION");
         if (other.gameObject.tag == "platform")
         {
             hit();

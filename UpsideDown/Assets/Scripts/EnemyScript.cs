@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 
 using gamespace;
+using TarodevController;
 
 public class Enemies : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Enemies : MonoBehaviour
     public GameObject main_player;
     Rigidbody2D rb;
     BoxCollider2D boxCollider;
+    BoxCollider2D overlapCollider;
+    private bool collider_exists;
     string mode;
     int direction;
     public float speed;
@@ -18,6 +21,9 @@ public class Enemies : MonoBehaviour
     private int _health;
     private Vector3 initial_pos;
     WorldType current_world;
+    public float attack_power = 10.0f;
+    private float _time;
+    private float _timeSinceLastHit;
 
     void OnEnable()
     {
@@ -50,15 +56,35 @@ public class Enemies : MonoBehaviour
         //monkeyAnimator.SetBool("goodWorld", false);
         rb = GetComponent<Rigidbody2D>();
         rb.freezeRotation = true;
-        boxCollider = GetComponent<BoxCollider2D>();
+        BoxCollider2D[] colliders = GetComponents<BoxCollider2D>();
+        boxCollider = colliders[0];
+        if (colliders.Length > 1)
+        {
+            overlapCollider = colliders[1];
+            overlapCollider.isTrigger = true;
+            collider_exists = true;
+        }
         mode = "goodWorld";
         direction = 1;
 
     }
 
-        // Update is called once per frame
-        void FixedUpdate()
-        {
+    // Update is called once per frame
+    void FixedUpdate(){
+        _time += Time.deltaTime;
+        if(collider_exists && (_time - _timeSinceLastHit) > 0.5 && mode == "attack"){
+            Collider2D[] hits = Physics2D.OverlapBoxAll(overlapCollider.bounds.center, overlapCollider.bounds.size, 0);
+            foreach (Collider2D hit in hits)
+            {
+                if (hit.CompareTag("Player"))
+                {
+                    _timeSinceLastHit = _time;
+                    PlayerController playerMovement = hit.GetComponent<PlayerController>();
+                    playerMovement.hitByEnemy(transform.position, attack_power);
+                }
+            }
+        }
+        
         switch (mode)
         {
             case "goodWorld":
@@ -67,19 +93,19 @@ public class Enemies : MonoBehaviour
                 break;
             
             case "badWorld":
+                
                 monkeyAnimator.SetBool("goodWorld", false);
                 monkeyAnimator.SetBool("monkeyWalks", true);
-                int layerMask = ~(LayerMask.GetMask("PlayerLayer"));
+                int layerMask = ~(LayerMask.GetMask("EnemyLayer"));
                 rb.velocity = new Vector2((float)(direction * speed), rb.velocity.y);
                 RaycastHit2D hit = Physics2D.Raycast(boxCollider.bounds.center, new Vector2(direction,-1),Mathf.Sqrt(Mathf.Pow(boxCollider.bounds.extents.y , 2) + Mathf.Pow(boxCollider.bounds.extents.x, 2)) + 1.0f, layerMask);
-                
+
                 if(hit.collider == null)
                 {
                     direction = direction * -1;
                     this.transform.Rotate(new Vector3(0, 180, 0));
-                    Debug.Log(direction);
                 }
-                if(Mathf.Abs(main_player.transform.position.x - this.transform.position.x) < 4)
+                if(Mathf.Abs(main_player.transform.position.x - this.transform.position.x) < 5 && Mathf.Abs(main_player.transform.position.y - this.transform.position.y) < 2)
                 {
                     mode = "attack";
                 }
@@ -90,11 +116,11 @@ public class Enemies : MonoBehaviour
                 monkeyAnimator.SetBool("monkeyWalks", true);
                 int attackSpeed = 3;
                 rb.velocity = new Vector2((float)(direction * attackSpeed), rb.velocity.y);
-                if (Mathf.Abs(main_player.transform.position.x - this.transform.position.x) >= 4)
+                if (Mathf.Abs(main_player.transform.position.x - this.transform.position.x) >= 5 || Mathf.Abs(main_player.transform.position.y - this.transform.position.y) >= 2)
                 {
                     mode = "badWorld";
                 }
-                else if (Mathf.Abs(main_player.transform.position.x - this.transform.position.x) < 1)
+                else if (Mathf.Abs(main_player.transform.position.x - this.transform.position.x) < 0.2)
                 {
                     direction = 0;
                 }

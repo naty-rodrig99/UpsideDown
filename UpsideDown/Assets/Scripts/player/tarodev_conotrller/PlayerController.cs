@@ -247,6 +247,13 @@ namespace TarodevController
 
         private void ApplyMovement() => _rb.velocity = _frameVelocity;
 
+
+        public void hitByEnemy(Vector3 enemyPos, float attack_power)
+        {
+            float direction = Mathf.Sign(transform.position.x - enemyPos.x);
+            _frameVelocity += new Vector2(direction * attack_power*1.3f, attack_power);
+        }
+
 #if UNITY_EDITOR
         private void OnValidate()
         {
