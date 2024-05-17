@@ -20,6 +20,9 @@ public class PlayerCamera : MonoBehaviour
     public GameObject[] FlashlightsObj;
     private Light2D[] Flashlights;
 
+    private int _looking_direction;
+    public float front_look_amount = 10.0f;
+
     public float cameraSpeed;
 
     public struct CAM_SETTINGS
@@ -31,10 +34,12 @@ public class PlayerCamera : MonoBehaviour
     void OnEnable()
     {
         WorldController.OnWorldChanged += UpdateWorld;
+        WorldController.OnPlayerDirectionChanged += UpdateDir;
     }
     void OnDisable()
     {
         WorldController.OnWorldChanged -= UpdateWorld;
+        WorldController.OnPlayerDirectionChanged += UpdateDir;
     }
     
     void UpdateWorld(WorldType type){
@@ -42,6 +47,9 @@ public class PlayerCamera : MonoBehaviour
         update_backgrounds();
         UpdateCameraYPos();
         UpdateLight();
+    }
+    void UpdateDir(int dir){
+        _looking_direction = dir;
     }
     void UpdateLight()
     {
@@ -120,7 +128,9 @@ public class PlayerCamera : MonoBehaviour
     }
 
     void handleCameraMovement(){
-        Vector2 player_position = player.transform.position;
+        Debug.Log(_looking_direction);
+        Vector3 front_offset = new Vector3(_looking_direction * front_look_amount, 0.0f, 0.0f);
+        Vector2 player_position = player.transform.position + front_offset;
         float delta_x;
 
         if(Mathf.Abs(player_position.x - transform.position.x) < 0.3f){

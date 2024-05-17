@@ -11,20 +11,24 @@ public class SwitchBarUIBar : MonoBehaviour
 
     double switchCharge;
     public double SwitchCost = 40;
+    public double maxCharge = 100;
     public double chargeSpeed = 1;
     private double dynamicBar_full_height;
 
     public bool ready;
     private Renderer _renderer;
 
-    void Start()
-    {
-
+    void Awake(){
         _renderer = dynamicBar.GetComponent<Renderer>();
         _renderer.material.color = Color.blue; 
 
         dynamicBar_full_height = dynamicBar.transform.localScale.y;
-        switchCharge = 20;
+        switchCharge = 0;
+    }
+
+    void Start()
+    {
+        
         
     }
 
@@ -41,19 +45,23 @@ public class SwitchBarUIBar : MonoBehaviour
         return getCharge() >= SwitchCost;
     }
     public void useEnergy(){
-        switchCharge -= SwitchCost;
+        update_switch_ui_bar(-SwitchCost);
     }
 
     void FixedUpdate(){
-        if(switchCharge < 100){
-            update_switch_ui_bar(chargeSpeed * 0.01);
-        }
+        
     }
 
     public void update_switch_ui_bar(double value){
-        switchCharge += value;
+
+        Debug.Log("test");
+        if(switchCharge + value > maxCharge) {
+            switchCharge = maxCharge;
+        }else{
+            switchCharge += value;
+        }
         Vector3 scale = dynamicBar.transform.localScale;
-        scale.y = (float)dynamicBar_full_height * (float)(switchCharge / 100.0f);
+        scale.y = (float)dynamicBar_full_height * (float)(switchCharge / maxCharge);
         dynamicBar.transform.localScale = scale;
 
         if(!ready && switchCharge >= SwitchCost){
