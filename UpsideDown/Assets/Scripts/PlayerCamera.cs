@@ -14,8 +14,8 @@ public class PlayerCamera : MonoBehaviour
     float cameraZ;
     public GameObject[] Backgrounds;
 
-    public GameObject lightObject;
-    private Light2D LightGoodWorld;
+    public GameObject[] goodLightObject;
+    private Light2D[] LightGoodWorld;
 
     public GameObject[] FlashlightsObj;
     private Light2D[] Flashlights;
@@ -44,22 +44,32 @@ public class PlayerCamera : MonoBehaviour
         UpdateCameraYPos();
         UpdateLight();
     }
-    void UpdateLight(){
-        if(current_world == WorldType.GoodWorld){
-            LightGoodWorld.intensity = 1.0f;
+    void UpdateLight()
+    {
+        if (current_world == WorldType.GoodWorld)
+        {
+            foreach (Light2D light in LightGoodWorld)
+            {
+                light.enabled = true;
+            }
             foreach (Light2D light in Flashlights)
             {
                 light.enabled = false;
             }
-        } 
-        if(current_world == WorldType.BadWorld){
-            LightGoodWorld.intensity = 0.1f;
+        }
+        else if (current_world == WorldType.BadWorld)
+        {
+            foreach (Light2D light in LightGoodWorld)
+            {
+                light.enabled = false;
+            }
             foreach (Light2D light in Flashlights)
             {
                 light.enabled = true;
             }
-        } 
+        }
     }
+
 
     void UpdateCameraYPos(){
         if(current_world == WorldType.GoodWorld){
@@ -76,7 +86,11 @@ public class PlayerCamera : MonoBehaviour
     
     void Start()
     {
-        LightGoodWorld = lightObject.GetComponent<Light2D>();
+        LightGoodWorld = new Light2D[goodLightObject.Length];
+        for (int i = 0; i < goodLightObject.Length; i++)
+        {
+            LightGoodWorld[i] = goodLightObject[i].GetComponent<Light2D>();
+        }
         Flashlights = new Light2D[FlashlightsObj.Length];
         for (int i = 0; i < FlashlightsObj.Length; i++)
         {
@@ -114,7 +128,7 @@ public class PlayerCamera : MonoBehaviour
             delta_x = 0;
         }
         else{
-            delta_x = ((player_position.x - transform.position.x) * Mathf.Abs(player_position.x - transform.position.x)) / (100.0f/cameraSpeed);
+            delta_x = Math.Max(-20.0f, Mathf.Min(20.0f,((player_position.x - transform.position.x) * Mathf.Abs(player_position.x - transform.position.x)) / (100.0f/cameraSpeed)));
         }
 
         transform.position = new Vector3(transform.position.x + delta_x, transform.position.y, cameraZ);
