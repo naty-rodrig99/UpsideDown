@@ -74,17 +74,23 @@ public class Enemies : MonoBehaviour
         _time += Time.deltaTime;
         if(collider_exists && (_time - _timeSinceLastHit) > 0.5 && mode == "attack"){
             Collider2D[] hits = Physics2D.OverlapBoxAll(overlapCollider.bounds.center, overlapCollider.bounds.size, 0);
-            foreach (Collider2D hit in hits)
+            foreach (Collider2D _hit in hits)
             {
-                if (hit.CompareTag("Player"))
+                if (_hit.CompareTag("Player"))
                 {
                     _timeSinceLastHit = _time;
-                    PlayerController playerMovement = hit.GetComponent<PlayerController>();
+                    PlayerController playerMovement = _hit.GetComponent<PlayerController>();
                     playerMovement.hitByEnemy(transform.position, attack_power);
                 }
             }
         }
-        
+
+        int layerMask = ~(LayerMask.GetMask("EnemyLayer"));
+        int enemyLayerMask = LayerMask.GetMask("EnemyLayer");
+
+        RaycastHit2D hit_groundcheck = Physics2D.Raycast(boxCollider.bounds.center, new Vector2(direction,-1),Mathf.Sqrt(Mathf.Pow(boxCollider.bounds.extents.y , 2) + Mathf.Pow(boxCollider.bounds.extents.x, 2)) + 1.0f, layerMask);
+        RaycastHit2D hit_friendlycheck = Physics2D.Raycast(boxCollider.bounds.center + new Vector3(direction * (boxCollider.bounds.extents.x + 0.3f),0.0f,0.0f), new Vector2(direction,0), 0.01f, enemyLayerMask);
+
         switch (mode)
         {
             case "goodWorld":
@@ -96,15 +102,21 @@ public class Enemies : MonoBehaviour
                 
                 monkeyAnimator.SetBool("goodWorld", false);
                 monkeyAnimator.SetBool("monkeyWalks", true);
-                int layerMask = ~(LayerMask.GetMask("EnemyLayer"));
+                
                 rb.velocity = new Vector2((float)(direction * speed), rb.velocity.y);
-                RaycastHit2D hit = Physics2D.Raycast(boxCollider.bounds.center, new Vector2(direction,-1),Mathf.Sqrt(Mathf.Pow(boxCollider.bounds.extents.y , 2) + Mathf.Pow(boxCollider.bounds.extents.x, 2)) + 1.0f, layerMask);
 
-                if(hit.collider == null)
+                if(hit_groundcheck.collider == null) // turn around when close to edge
                 {
                     direction = direction * -1;
                     this.transform.Rotate(new Vector3(0, 180, 0));
                 }
+                if(hit_friendlycheck.collider != null && hit_friendlycheck.collider != boxCollider){ // turn around when walking in to other enemy
+                    Debug.Log("finding col");
+                    this.transform.Rotate(new Vector3(0, 180, 0));
+
+                    direction = direction * -1;
+                }
+                    
                 if(Mathf.Abs(main_player.transform.position.x - this.transform.position.x) < 5 && Mathf.Abs(main_player.transform.position.y - this.transform.position.y) < 2)
                 {
                     mode = "attack";
@@ -115,7 +127,21 @@ public class Enemies : MonoBehaviour
                 monkeyAnimator.SetBool("goodWorld", false);
                 monkeyAnimator.SetBool("monkeyWalks", true);
                 int attackSpeed = 3;
-                rb.velocity = new Vector2((float)(direction * attackSpeed), rb.velocity.y);
+                //int layerMask = ~(LayerMask.GetMask("EnemyLayer"));
+                //hit = Physics2D.Raycast(boxCollider.bounds.center, new Vector2(direction,-1),Mathf.Sqrt(Mathf.Pow(boxCollider.bounds.extents.y , 2) + Mathf.Pow(boxCollider.bounds.extents.x, 2)) + 1.0f, layerMask);
+                if(hit_groundcheck.collider != null)
+                {
+                    Debug.Log("NONNULL");
+                    rb.velocity = new Vector2((float)(direction * attackSpeed), rb.velocity.y);
+                }else{
+                    Debug.Log("null collider found");
+                    rb.velocity = new Vector2(0.0f, 0.0f);
+                }
+                if (hit_friendlycheck.collider != null && hit_friendlycheck.collider != boxCollider)
+                {
+                    direction = direction * -1;
+                    this.transform.Rotate(new Vector3(0, 180, 0));
+                }
                 if (Mathf.Abs(main_player.transform.position.x - this.transform.position.x) >= 5 || Mathf.Abs(main_player.transform.position.y - this.transform.position.y) >= 2)
                 {
                     mode = "badWorld";

@@ -128,7 +128,6 @@ public class PlayerCamera : MonoBehaviour
     }
 
     void handleCameraMovement(){
-        Debug.Log(_looking_direction);
         Vector3 front_offset = new Vector3(_looking_direction * front_look_amount, 0.0f, 0.0f);
         Vector2 player_position = player.transform.position + front_offset;
         float delta_x;
