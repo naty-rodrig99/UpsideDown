@@ -23,7 +23,8 @@ public class SwitchBarUIBar : MonoBehaviour
         _renderer.material.color = Color.blue; 
 
         dynamicBar_full_height = dynamicBar.transform.localScale.y;
-        switchCharge = 100;
+        switchCharge = 0;
+        update_switch_ui_bar(0);
     }
 
     void Start()
