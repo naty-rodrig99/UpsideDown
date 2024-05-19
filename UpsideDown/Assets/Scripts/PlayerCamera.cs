@@ -22,10 +22,10 @@ public class PlayerCamera : MonoBehaviour
     private Light2D[] Flashlights;
 
     private int _looking_direction;
-    public float front_look_amount = 10.0f;
+    public float front_look_amount = 0.0f;
 
-    public float cameraSpeedX;
-    public float cameraSpeedY;
+    public float cameraSpeedX = 4.0f;
+    public float cameraSpeedY = 3.0f;
     private Vector2 _initPos;
     private Vector2 _cameraCurrentMinHeight;
     public float cameraHeightMax;
