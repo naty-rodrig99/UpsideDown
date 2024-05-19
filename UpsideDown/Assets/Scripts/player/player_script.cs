@@ -49,10 +49,11 @@ public class player_script : MonoBehaviour
     //public HealthManager healthManager;
     private object console;
 
+    private bool dontUpdatePosOnStart = true;
+
     // Start is called before the first frame update
     void Start()
     {
-
         boxCollider2d = GetComponent<BoxCollider2D>();
 
         initial_pos = transform.position;
@@ -84,16 +85,16 @@ public class player_script : MonoBehaviour
     void init_world(){
         WorldController.UpdateCurrentWorld(start_world);
 
-        // if (start_world == WorldType.GoodWorld)
-        // {
+        if (start_world == WorldType.GoodWorld)
+        {
             
-        //     //animator.SetBool("good_world", true);
-        // }
-        // else
-        // {
-        //     WorldController.UpdateCurrentWorld(1);
-        //     //animator.SetBool("good_world", false);
-        // }
+            //animator.SetBool("good_world", true);
+        }
+        else
+        {
+            //WorldController.UpdateCurrentWorld(1);
+            //animator.SetBool("good_world", false);
+        }
     }
 
     void FixedUpdate()
@@ -151,7 +152,11 @@ public class player_script : MonoBehaviour
         }
     }
 
-    void change_world(WorldType world){       
+    void change_world(WorldType world){      
+        if(dontUpdatePosOnStart){
+            dontUpdatePosOnStart = false;
+            return;
+        }
         switch (world){
             case WorldType.BadWorld:
                 transform.position += new Vector3(0, -20, 0);
