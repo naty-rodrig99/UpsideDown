@@ -253,6 +253,9 @@ namespace TarodevController
             float direction = Mathf.Sign(transform.position.x - enemyPos.x);
             _frameVelocity += new Vector2(direction * attack_power*1.3f, attack_power);
         }
+        public Vector3 getPlayerVelocity(){
+            return _frameVelocity;
+        }
 
 #if UNITY_EDITOR
         private void OnValidate()
