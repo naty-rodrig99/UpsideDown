@@ -9,7 +9,7 @@ namespace TarodevController
     public class PlayerAnimator : MonoBehaviour
     {
         [Header("References")] [SerializeField]
-        //private Animator _anim;
+        private Animator _anim;
 
         //[SerializeField] private SpriteRenderer _sprite;
 
@@ -33,9 +33,17 @@ namespace TarodevController
         private ParticleSystem.MinMaxGradient _currentGradient;
 
         WorldType _current_world;
-        
+
         void UpdateWorld(WorldType type){
             _current_world = type;
+            if(_current_world == WorldType.GoodWorld)
+            {
+                _anim.SetBool("good_world", true);
+            }
+            else
+            {
+                _anim.SetBool("good_world", false);
+            }
         }
 
         private void Awake()
@@ -74,6 +82,8 @@ namespace TarodevController
             HandleIdleSpeed();
 
             HandleCharacterTilt();
+
+            HandleMovementAnimations();
         }
 
         private void HandleSpriteFlip()
@@ -84,6 +94,8 @@ namespace TarodevController
         private void HandleIdleSpeed()
         {
             var inputStrength = Mathf.Abs(_player.FrameInput.x);
+            //_anim.SetBool("good_world", true);
+            //_anim.SetBool("good_Right",true);
             //_anim.SetFloat(IdleSpeedKey, Mathf.Lerp(1, _maxIdleSpeed, inputStrength));
             //_moveParticles.transform.localScale = Vector3.MoveTowards(_moveParticles.transform.localScale, Vector3.one * inputStrength, 2 * Time.deltaTime);
         }
@@ -94,11 +106,39 @@ namespace TarodevController
             //_anim.transform.up = Vector3.RotateTowards(_anim.transform.up, runningTilt * Vector2.up, _tiltSpeed * Time.deltaTime, 0f);
         }
 
+        private void HandleMovementAnimations()
+        {
+            float horizontalInput = _player.FrameInput.x;
+            
+            if (horizontalInput == 0 && _current_world == WorldType.GoodWorld)
+            {
+                _anim.SetBool("good_Right", false);
+                _anim.SetBool("good_Left", false);
+            }
+            else if (horizontalInput > 0 && _current_world == WorldType.GoodWorld)
+            {
+                _anim.SetBool("good_Right", true);
+            } else if(horizontalInput < 0 && _current_world == WorldType.GoodWorld)
+            {
+                _anim.SetBool("good_Left", true);
+            } else if (horizontalInput == 0 && _current_world == WorldType.BadWorld)
+            {
+                _anim.SetBool("bad_Right", false);
+                _anim.SetBool("bad_Left", false);
+            } else if (horizontalInput > 0 && _current_world == WorldType.BadWorld)
+            {
+                _anim.SetBool("bad_Right", true);
+            } else if (horizontalInput < 0 && _current_world == WorldType.BadWorld)
+            {
+                _anim.SetBool("bad_Left", true);
+            }
+        }
+
         private void OnJumped()
         {
             //_anim.SetTrigger(JumpKey);
             //_anim.ResetTrigger(GroundedKey);
-
+            //_anim.SetBool("isJumping",true);
 
             if (_grounded) // Avoid coyote
             {
