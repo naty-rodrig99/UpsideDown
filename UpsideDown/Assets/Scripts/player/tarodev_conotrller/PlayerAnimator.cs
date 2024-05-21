@@ -94,8 +94,6 @@ namespace TarodevController
         private void HandleIdleSpeed()
         {
             var inputStrength = Mathf.Abs(_player.FrameInput.x);
-            //_anim.SetBool("good_world", true);
-            //_anim.SetBool("good_Right",true);
             //_anim.SetFloat(IdleSpeedKey, Mathf.Lerp(1, _maxIdleSpeed, inputStrength));
             //_moveParticles.transform.localScale = Vector3.MoveTowards(_moveParticles.transform.localScale, Vector3.one * inputStrength, 2 * Time.deltaTime);
         }
@@ -138,7 +136,6 @@ namespace TarodevController
         {
             //_anim.SetTrigger(JumpKey);
             //_anim.ResetTrigger(GroundedKey);
-            //_anim.SetBool("isJumping",true);
 
             if (_grounded) // Avoid coyote
             {
@@ -163,10 +160,12 @@ namespace TarodevController
 
                 _landParticles.transform.localScale = Vector3.one * Mathf.InverseLerp(0, 40, impact);
                 _landParticles.Play();
+                _anim.SetBool("isJumping", false);
             }
             else
             {
                 _moveParticles.Stop();
+                _anim.SetBool("isJumping", true);
             }
         }
 
