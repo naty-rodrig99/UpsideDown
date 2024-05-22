@@ -100,12 +100,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 622.2222
-        width: 100
-        height: 77.77778
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 13
+        y: 629
+        width: 74
+        height: 66
+      alignment: 9
+      pivot: {x: 0.3616405, y: 0.5258549}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -121,12 +121,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_1
       rect:
         serializedVersion: 2
-        x: 118
-        y: 622
-        width: 82
-        height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 131
+        y: 629
+        width: 46
+        height: 66
+      alignment: 9
+      pivot: {x: 0.59274095, y: 0.5155131}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -142,12 +142,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 537
-        width: 100
+        x: 6
+        y: 538
+        width: 81
         height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.40309128, y: 0.45405775}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -163,12 +163,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_3
       rect:
         serializedVersion: 2
-        x: 119
+        x: 124
         y: 538
-        width: 82
+        width: 60
         height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5767893, y: 0.45405775}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -184,12 +184,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 456
-        width: 100
-        height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 12
+        y: 461
+        width: 75
+        height: 66
+      alignment: 9
+      pivot: {x: 0.35893452, y: 0.52844054}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -205,12 +205,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_5
       rect:
         serializedVersion: 2
-        x: 119
-        y: 455
-        width: 82
-        height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 131
+        y: 461
+        width: 46
+        height: 65
+      alignment: 9
+      pivot: {x: 0.6075794, y: 0.53150356}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -226,12 +226,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_6
       rect:
         serializedVersion: 2
-        x: 0
-        y: 379
-        width: 100
-        height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 19
+        y: 384
+        width: 74
+        height: 66
+      alignment: 9
+      pivot: {x: 0.3685584, y: 0.52844054}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -247,12 +247,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_7
       rect:
         serializedVersion: 2
-        x: 119
-        y: 378
-        width: 82
-        height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 131
+        y: 384
+        width: 46
+        height: 65
+      alignment: 9
+      pivot: {x: 0.60016, y: 0.54988027}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -268,12 +268,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 302
-        width: 100
-        height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 12
+        y: 307
+        width: 74
+        height: 65
+      alignment: 9
+      pivot: {x: 0.6752554, y: 0.53675395}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -289,12 +289,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_9
       rect:
         serializedVersion: 2
-        x: 121
-        y: 301
-        width: 82
-        height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 138
+        y: 307
+        width: 46
+        height: 66
+      alignment: 9
+      pivot: {x: 0.42580712, y: 0.53102577}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -310,12 +310,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_10
       rect:
         serializedVersion: 2
-        x: 1
-        y: 223
-        width: 100
-        height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 12
+        y: 230
+        width: 74
+        height: 65
+      alignment: 9
+      pivot: {x: 0.64988935, y: 0.5446299}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -331,12 +331,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_11
       rect:
         serializedVersion: 2
-        x: 121
-        y: 224
-        width: 82
-        height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 138
+        y: 230
+        width: 46
+        height: 65
+      alignment: 9
+      pivot: {x: 0.4332262, y: 0.5393794}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -352,12 +352,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_12
       rect:
         serializedVersion: 2
-        x: 0
-        y: 146
-        width: 100
-        height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 12
+        y: 153
+        width: 74
+        height: 65
+      alignment: 9
+      pivot: {x: 0.6383595, y: 0.53412896}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -373,12 +373,12 @@ TextureImporter:
       name: gamedesign-pixilart (4)_13
       rect:
         serializedVersion: 2
-        x: 121
-        y: 144
-        width: 82
-        height: 78
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 138
+        y: 152
+        width: 46
+        height: 66
+      alignment: 9
+      pivot: {x: 0.4443552, y: 0.5517104}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
