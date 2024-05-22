@@ -111,7 +111,6 @@ public class Enemies : MonoBehaviour
                     this.transform.Rotate(new Vector3(0, 180, 0));
                 }
                 if(hit_friendlycheck.collider != null && hit_friendlycheck.collider != boxCollider){ // turn around when walking in to other enemy
-                    Debug.Log("finding col");
                     this.transform.Rotate(new Vector3(0, 180, 0));
 
                     direction = direction * -1;
