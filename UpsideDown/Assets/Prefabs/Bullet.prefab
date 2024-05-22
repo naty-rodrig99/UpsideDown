@@ -189,7 +189,7 @@ MonoBehaviour:
   wobbleFrequency: 16.02
   direction: 0
   duration: 0.7
-  speedMultiplier: 1.16
+  speedMultiplier: 1.08
 --- !u!61 &3495406199956521809
 BoxCollider2D:
   m_ObjectHideFlags: 0

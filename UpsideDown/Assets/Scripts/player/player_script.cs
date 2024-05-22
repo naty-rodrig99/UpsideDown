@@ -79,6 +79,9 @@ public class player_script : MonoBehaviour
     }
     void UpdateDir(int dir){
         looking_direction = dir;
+        if(dir == -1) transform.rotation = Quaternion.Euler(transform.eulerAngles.x, 180, transform.eulerAngles.z);
+        else if(dir == 1) transform.rotation = Quaternion.Euler(transform.eulerAngles.x, 0, transform.eulerAngles.z);
+
     }
     
 
@@ -138,8 +141,10 @@ public class player_script : MonoBehaviour
         GameObject bullet_instance = Instantiate(bullet, transform.position + localBulletOffset_new, Quaternion.identity);
         Bullet bullet_script = bullet_instance.GetComponent<Bullet>();
 
+        Debug.Log(looking_direction);
+
         if(looking_direction > 0.0f) shoot_particles_right.Play();
-        if(looking_direction < 0.0f) shoot_particles_left.Play();
+        if(looking_direction < 0.0f) shoot_particles_right.Play();
         
         bullet_script.set_direction(looking_direction); // sets direction of bullet, 1 right -1 left
         soundManager.PlayShootSound();
