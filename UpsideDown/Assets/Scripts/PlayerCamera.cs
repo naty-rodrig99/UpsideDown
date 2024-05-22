@@ -161,7 +161,6 @@ public class PlayerCamera : MonoBehaviour
     float getDeltaX(){
         float delta_x;
         Vector3 front_offset = new Vector3(front_look_amount * _playerVelocityX, 0.0f, 0.0f);
-        //Debug.Log(front_offset);
         Vector2 player_position = player.transform.position + front_offset;
 
         if(Mathf.Abs(player_position.x - transform.position.x) < 0.3f){
