@@ -33,6 +33,7 @@ namespace TarodevController
         private ParticleSystem.MinMaxGradient _currentGradient;
 
         WorldType _current_world;
+        private int _lookingDirection;
 
         void UpdateWorld(WorldType type){
             _current_world = type;
@@ -44,6 +45,9 @@ namespace TarodevController
             {
                 _anim.SetBool("good_world", false);
             }
+        }
+        void UpdateDir(int dir){
+            _lookingDirection = dir;
         }
 
         private void Awake()
@@ -57,6 +61,7 @@ namespace TarodevController
             _player.Jumped += OnJumped;
             _player.GroundedChanged += OnGroundedChanged;
             WorldController.OnWorldChanged += UpdateWorld;
+            WorldController.OnPlayerDirectionChanged += UpdateDir;
 
             //_moveParticles.Play();
              _moveParticles.Stop();
@@ -67,6 +72,7 @@ namespace TarodevController
             _player.Jumped -= OnJumped;
             _player.GroundedChanged -= OnGroundedChanged;
             WorldController.OnWorldChanged -= UpdateWorld;
+            WorldController.OnPlayerDirectionChanged -= UpdateDir;
 
             _moveParticles.Stop();
         }
@@ -107,29 +113,13 @@ namespace TarodevController
         private void HandleMovementAnimations()
         {
             float horizontalInput = _player.FrameInput.x;
+
+            _anim.SetBool("running", false);
+            _anim.SetBool("idle", false);
             
-            if (horizontalInput == 0 && _current_world == WorldType.GoodWorld)
-            {
-                _anim.SetBool("good_Right", false);
-                _anim.SetBool("good_Left", false);
-            }
-            else if (horizontalInput > 0 && _current_world == WorldType.GoodWorld)
-            {
-                _anim.SetBool("good_Right", true);
-            } else if(horizontalInput < 0 && _current_world == WorldType.GoodWorld)
-            {
-                _anim.SetBool("good_Left", true);
-            } else if (horizontalInput == 0 && _current_world == WorldType.BadWorld)
-            {
-                _anim.SetBool("bad_Right", false);
-                _anim.SetBool("bad_Left", false);
-            } else if (horizontalInput > 0 && _current_world == WorldType.BadWorld)
-            {
-                _anim.SetBool("bad_Right", true);
-            } else if (horizontalInput < 0 && _current_world == WorldType.BadWorld)
-            {
-                _anim.SetBool("bad_Left", true);
-            }
+            if (horizontalInput != 0 && _grounded) _anim.SetBool("running", true);
+            else if(horizontalInput == 0 && _grounded) _anim.SetBool("idle", true);
+
         }
 
         private void OnJumped()
@@ -154,7 +144,7 @@ namespace TarodevController
                 DetectGroundColor();
                 SetColor(_landParticles);
 
-                _anim.SetBool("isJumping", false);
+                _anim.SetBool("jumping", false);
                 //_anim.SetTrigger(GroundedKey);
                 _source.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
                 //_moveParticles.Play();
@@ -164,7 +154,7 @@ namespace TarodevController
             }
             else
             {
-                _anim.SetBool("isJumping", true);
+                _anim.SetBool("jumping", true);
                 _moveParticles.Stop();
             }
         }
