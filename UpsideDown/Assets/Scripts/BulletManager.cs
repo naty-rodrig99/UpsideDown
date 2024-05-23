@@ -35,15 +35,15 @@ public class BulletCollect : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Increase player's bullet count
-            // player_script playerController = other.GetComponent<player_script>();
-            // SoundManager soundManager = playerController.GetComponent<SoundManager>();  
-            // if (playerController != null)
-            // {
-            //     playerController.ManageBullets(bulletCount);
-            // }
+            player_script playerController = other.GetComponent<player_script>();
+            SoundManager soundManager = playerController.GetComponent<SoundManager>();  
+            if (playerController != null)
+            {
+                 playerController.ManageBullet(bulletCount);
+            }
 
-            // // Destroy the collectible bullet GameObject
-            // soundManager.PlayCollectPointSound();
+             // Destroy the collectible bullet GameObject
+            soundManager.PlayCollectPointSound();
             Destroy(gameObject);
         }
     }

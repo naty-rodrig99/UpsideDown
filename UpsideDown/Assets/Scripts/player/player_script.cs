@@ -149,6 +149,7 @@ public class player_script : MonoBehaviour
         
         bullet_script.set_direction(looking_direction); // sets direction of bullet, 1 right -1 left
         soundManager.PlayShootSound();
+        ManageBullet(-1);
     }
 
     void try_change_world(){
