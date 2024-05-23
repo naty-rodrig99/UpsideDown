@@ -144,6 +144,10 @@ public class player_script : MonoBehaviour
     
     void fire_bullet()
     {
+        //if there are no bullets, exit the method
+        if (currentBullets == 0)
+            return;
+
         Vector3 localBulletOffset_new = new Vector3(localBulletOffset.x * looking_direction, localBulletOffset.y, localBulletOffset.y);
         GameObject bullet_instance = Instantiate(bullet, transform.position + localBulletOffset_new, Quaternion.identity);
         Bullet bullet_script = bullet_instance.GetComponent<Bullet>();

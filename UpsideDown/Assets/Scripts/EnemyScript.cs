@@ -5,6 +5,7 @@ using System;
 
 using gamespace;
 using TarodevController;
+using Unity.Burst.CompilerServices;
 
 public class Enemies : MonoBehaviour
 {
@@ -81,6 +82,8 @@ public class Enemies : MonoBehaviour
                     _timeSinceLastHit = _time;
                     PlayerController playerMovement = _hit.GetComponent<PlayerController>();
                     playerMovement.hitByEnemy(transform.position, attack_power);
+                    player_script playerController = _hit.GetComponent<player_script>();
+                    playerController.ManageHealth(-1);
                 }
             }
         }
