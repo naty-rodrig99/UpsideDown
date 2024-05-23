@@ -82,8 +82,9 @@ public class player_script : MonoBehaviour
     }
     void UpdateDir(int dir){
         looking_direction = dir;
-        if(dir == -1) transform.rotation = Quaternion.Euler(transform.eulerAngles.x, 180, transform.eulerAngles.z);
-        else if(dir == 1) transform.rotation = Quaternion.Euler(transform.eulerAngles.x, 0, transform.eulerAngles.z);
+        SpriteRenderer _sr = GetComponent<SpriteRenderer>();
+        if(dir == -1) _sr.flipX = true;
+        else if(dir == 1) _sr.flipX = false;;
 
     }
     
