@@ -46,4 +46,14 @@ public class BoxScript : MonoBehaviour
     {
 
     }
+
+    void Awake()
+    {
+        // Initialize Rigidbody2D in Awake to ensure it's available early
+        _rb = GetComponent<Rigidbody2D>();
+        if (_rb == null)
+        {
+            Debug.LogError("Rigidbody2D component not found in Awake!");
+        }
+    }
 }

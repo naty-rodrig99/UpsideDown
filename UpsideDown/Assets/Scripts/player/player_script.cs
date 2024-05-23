@@ -32,9 +32,6 @@ public class player_script : MonoBehaviour
 
     private int looking_direction;
 
-    public TextMeshProUGUI bulletText; 
-    private int currentBullets = 0; 
-
     public WorldType start_world;
 
     private Vector3 initial_pos;
@@ -46,7 +43,11 @@ public class player_script : MonoBehaviour
     public Vector3 localBulletOffset = new Vector3(0.0f, 0.0f, 0.0f);
 
     public SoundManager soundManager;
-    //public HealthManager healthManager;
+    public HealthManager healthManager;
+    public TextMeshProUGUI bulletText;
+    private int currentBullets = 0;
+    private int currentHealth = 3;
+
     private object console;
 
     private bool dontUpdatePosOnStart = true;
@@ -115,7 +116,7 @@ public class player_script : MonoBehaviour
             {
                 WorldController.change_world();
             }
-            //Manager.ModifyHealth(-1);
+            ManageHealth(-1);
             return;
         }
     }
@@ -188,14 +189,16 @@ public class player_script : MonoBehaviour
         return false;
     }
 
-    public void AddBullets(int amount)
+    public void ManageBullet(int amount)
     {
         currentBullets += amount;
+        bulletText.text = currentBullets.ToString();
     }
 
-    public void UpdateBulletUI()
+    public void ManageHealth(int amount)
     {
-        bulletText.text = currentBullets.ToString();
+        currentHealth += amount;
+        healthManager.ModifyHealth(currentHealth);
     }
 }
 

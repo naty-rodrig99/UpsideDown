@@ -12,14 +12,12 @@ public class HealthManager : MonoBehaviour
     public Sprite fullHeart;
     public Sprite emptyHeart;
 
-    private player_script playerScript;
+    //public MenuManager menuManager;
 
     // Start is called before the first frame update
     void Start()
     {
         UpdateHeartIcons();
-        GameObject player = GameObject.Find("Main_Character");
-        playerScript = player.GetComponent<player_script>();
     }
 
     // Update is called once per frame
@@ -58,18 +56,27 @@ public class HealthManager : MonoBehaviour
         currentHearts = amount;
         currentHearts = Mathf.Clamp(currentHearts, 0, maxHearts);
         UpdateHeartIcons();
+
+        if (currentHearts == 0)
+        {
+            //menuManager.GameOver();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            //Increase player's heart count
-            //SoundManager soundManager = playerController.GetComponent<SoundManager>();
-            
-            playerScript.Health += 1;
-            //Destroy the collectible bullet GameObject
-            //soundManager.PlayCollectPointSound();
+            // Increase player's heart count
+            player_script playerController = other.GetComponent<player_script>();
+            SoundManager soundManager = playerController.GetComponent<SoundManager>();
+            if (playerController != null)
+            {
+                playerController.ManageHealth(1);
+            }
+
+            // Destroy the collectible bullet GameObject
+            soundManager.PlayCollectPointSound();
             Destroy(gameObject);
         }
     }
