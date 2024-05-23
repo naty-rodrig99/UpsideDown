@@ -44,6 +44,8 @@ public class player_script : MonoBehaviour
 
     public SoundManager soundManager;
     public HealthManager healthManager;
+    public MenuManager menuManager;
+
     public TextMeshProUGUI bulletText;
     private int currentBullets = 0;
     private int currentHealth = 3;
@@ -133,6 +135,10 @@ public class player_script : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            menuManager.Pause();
         }
     }
     

@@ -12,7 +12,7 @@ public class HealthManager : MonoBehaviour
     public Sprite fullHeart;
     public Sprite emptyHeart;
 
-    //public MenuManager menuManager;
+    public MenuManager menuManager;
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +59,7 @@ public class HealthManager : MonoBehaviour
 
         if (currentHearts == 0)
         {
-            //menuManager.GameOver();
+            menuManager.GameOver();
         }
     }
 
