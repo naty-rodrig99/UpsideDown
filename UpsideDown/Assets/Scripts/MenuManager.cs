@@ -91,11 +91,8 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        // Hide the start menu UI
         startMenu.SetActive(false);
 
-        // Load the main game scene
-        //SceneManager.LoadScene("MainGameScene"); // Replace with your main game scene name
         Time.timeScale = 1;
     }
 }
