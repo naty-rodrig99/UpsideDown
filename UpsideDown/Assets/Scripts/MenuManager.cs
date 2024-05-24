@@ -9,13 +9,15 @@ public class MenuManager : MonoBehaviour
     GameObject pauseMenu;
     [SerializeField]
     GameObject gameOverMenu;
+    [SerializeField]
+    GameObject startMenu;
 
     AudioSource[] audios;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        Time.timeScale = 0;
     }
 
     // Update is called once per frame
@@ -85,5 +87,15 @@ public class MenuManager : MonoBehaviour
         gameOverMenu.SetActive(false);
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void StartGame()
+    {
+        // Hide the start menu UI
+        startMenu.SetActive(false);
+
+        // Load the main game scene
+        //SceneManager.LoadScene("MainGameScene"); // Replace with your main game scene name
+        Time.timeScale = 1;
     }
 }
