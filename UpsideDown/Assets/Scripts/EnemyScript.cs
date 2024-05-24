@@ -9,7 +9,9 @@ using Unity.Burst.CompilerServices;
 
 public class Enemies : MonoBehaviour
 {
-    public Animator monkeyAnimator;
+    public enum EnemyType { Monkey, Tiger }
+    public EnemyType enemyType;
+    public Animator animator;
     public GameObject main_player;
     Rigidbody2D rb;
     BoxCollider2D boxCollider;
@@ -97,15 +99,30 @@ public class Enemies : MonoBehaviour
         switch (mode)
         {
             case "goodWorld":
-                monkeyAnimator.SetBool("goodWorld", true);
-                monkeyAnimator.SetBool("monkeyMoves", true);
+                if (enemyType == EnemyType.Monkey)
+                {
+                    animator.SetBool("goodWorld", true);
+                    animator.SetBool("monkeyMoves", true);
+                } 
+                else if (enemyType == EnemyType.Tiger)
+                {
+                    animator.SetBool("goodWorld", true);
+                    //animator.SetBool("tigerWalks", true);
+                }
                 break;
             
             case "badWorld":
-                
-                monkeyAnimator.SetBool("goodWorld", false);
-                monkeyAnimator.SetBool("monkeyWalks", true);
-                
+                if (enemyType == EnemyType.Monkey)
+                {
+                    animator.SetBool("goodWorld", false);
+                    animator.SetBool("monkeyWalks", true);
+                }
+                else if (enemyType == EnemyType.Tiger)
+                {
+                    animator.SetBool("goodWorld", false);
+                    animator.SetBool("tigerWalks", true);
+                }
+
                 rb.velocity = new Vector2((float)(direction * speed), rb.velocity.y);
 
                 if(hit_groundcheck.collider == null) // turn around when close to edge
@@ -126,8 +143,16 @@ public class Enemies : MonoBehaviour
                 break;
 
             case "attack":
-                monkeyAnimator.SetBool("goodWorld", false);
-                monkeyAnimator.SetBool("monkeyWalks", true);
+                if (enemyType == EnemyType.Monkey)
+                {
+                    animator.SetBool("goodWorld", false);
+                    animator.SetBool("monkeyWalks", true);
+                }
+                else if (enemyType == EnemyType.Tiger)
+                {
+                    animator.SetBool("goodWorld", false);
+                    animator.SetBool("tigerWalks", true);
+                }
                 int attackSpeed = 3;
                 //int layerMask = ~(LayerMask.GetMask("EnemyLayer"));
                 //hit = Physics2D.Raycast(boxCollider.bounds.center, new Vector2(direction,-1),Mathf.Sqrt(Mathf.Pow(boxCollider.bounds.extents.y , 2) + Mathf.Pow(boxCollider.bounds.extents.x, 2)) + 1.0f, layerMask);
@@ -164,7 +189,14 @@ public class Enemies : MonoBehaviour
                 break;
 
             case "getsShot":
-                monkeyAnimator.SetBool("monkeyGetsShot", true);
+                if (enemyType == EnemyType.Monkey)
+                {
+                    animator.SetBool("monkeyGetsShot", true);
+                }
+                else if (enemyType == EnemyType.Tiger)
+                {
+                    animator.SetBool("tigerGetsShot", true);
+                }
                 break;
         }
             
