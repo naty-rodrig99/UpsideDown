@@ -50,8 +50,8 @@ public class Enemies : MonoBehaviour
         if(_health <= 0) die();
     }
     void die(){
-        scoreManager.ModifyScore(killScore);
         Destroy(gameObject);
+        scoreManager.ModifyScore(killScore);
     }
 
 
