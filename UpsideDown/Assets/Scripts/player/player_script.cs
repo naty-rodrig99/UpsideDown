@@ -49,6 +49,7 @@ public class player_script : MonoBehaviour
     public TextMeshProUGUI bulletText;
     private int currentBullets = 0;
     private int currentHealth = 3;
+    private int currentScore = 0;
 
     private object console;
 

@@ -27,6 +27,10 @@ public class Enemies : MonoBehaviour
     public float attack_power = 10.0f;
     private float _time;
     private float _timeSinceLastHit;
+    public int killScore = 10;
+
+    public ScoreManager scoreManager;
+
 
     void OnEnable()
     {
@@ -46,6 +50,7 @@ public class Enemies : MonoBehaviour
         if(_health <= 0) die();
     }
     void die(){
+        scoreManager.ModifyScore(killScore);
         Destroy(gameObject);
     }
 
