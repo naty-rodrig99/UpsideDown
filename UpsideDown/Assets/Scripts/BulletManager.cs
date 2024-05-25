@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class BulletCollect : MonoBehaviour
+public class BulletManager : MonoBehaviour
 {
     public int bulletCount = 10;
     private Vector3 startPosition;
@@ -11,6 +12,9 @@ public class BulletCollect : MonoBehaviour
     public float moveRange = 0.5f; // The range of movement from the start position
     public float noiseScale = 1.0f; // Scale of the noise
     public float moveSpeed = 1.0f; // Speed of movement
+
+    public TextMeshProUGUI bulletText;
+    public int currentBullets = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +34,12 @@ public class BulletCollect : MonoBehaviour
         transform.position = new Vector3(newX, newY, transform.position.z);
     }
 
+    public void ModifyBullets(int amount)
+    {
+        currentBullets = amount;
+        bulletText.text = currentBullets.ToString();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
@@ -39,7 +49,7 @@ public class BulletCollect : MonoBehaviour
             SoundManager soundManager = playerController.GetComponent<SoundManager>();  
             if (playerController != null)
             {
-                 playerController.ManageBullet(bulletCount);
+                playerController.ManageBullet(bulletCount);
             }
 
              // Destroy the collectible bullet GameObject

@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    public int scoreMax = 100;
-    public int scoreCurrent = 0;
+    public int scoreMax = 50;
+    public int currentScore = 0;
 
     public Image scoreIcon;
     public TextMeshProUGUI scoreText;
@@ -32,11 +32,11 @@ public class ScoreManager : MonoBehaviour
 
     void UpdateScoreIconAndText()
     {
-        if (scoreCurrent >= silverScore)
+        if (currentScore >= silverScore)
         {
             scoreIcon.sprite = scoreType2;
         }
-        else if (scoreCurrent >= goldScore)
+        else if (currentScore >= goldScore)
         {
             scoreIcon.sprite = scoreType3;
         }
@@ -45,16 +45,14 @@ public class ScoreManager : MonoBehaviour
             scoreIcon.sprite = scoreType1;
         }
 
-        scoreText.text = scoreCurrent.ToString();
+        scoreText.text = currentScore.ToString();
     }
 
     public void ModifyScore(int amount)
     {
-        scoreCurrent += amount;
+        currentScore += amount;
         UpdateScoreIconAndText();
     }
-
-
 
 
 }
