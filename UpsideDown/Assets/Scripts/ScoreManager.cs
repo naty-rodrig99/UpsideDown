@@ -15,6 +15,8 @@ public class ScoreManager : MonoBehaviour
     public Sprite scoreType1;
     public Sprite scoreType2;
     public Sprite scoreType3;
+    public int silverScore;
+    public int goldScore;
 
     // Start is called before the first frame update
     void Start()
@@ -30,11 +32,11 @@ public class ScoreManager : MonoBehaviour
 
     void UpdateScoreIconAndText()
     {
-        if (scoreCurrent > 30)
+        if (scoreCurrent >= silverScore)
         {
             scoreIcon.sprite = scoreType2;
         }
-        else if (scoreCurrent > 60)
+        else if (scoreCurrent >= goldScore)
         {
             scoreIcon.sprite = scoreType3;
         }
