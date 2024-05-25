@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class MenuManager : MonoBehaviour
 {
@@ -14,10 +16,18 @@ public class MenuManager : MonoBehaviour
 
     AudioSource[] audios;
 
+    public StarRatingManager starsRatingManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 0;
+        int gameMode = PlayerPrefs.GetInt("gameMode");
+
+        if (gameMode == 0)
+        {
+            startMenu.SetActive(true);
+            Time.timeScale = 0;
+        }
     }
 
     // Update is called once per frame
@@ -66,6 +76,7 @@ public class MenuManager : MonoBehaviour
     public void RestartGame()
     {
         Resume();
+        PlayerPrefs.SetInt("gameMode", 1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -80,19 +91,22 @@ public class MenuManager : MonoBehaviour
         {
             audio.Pause();
         }
+
+        starsRatingManager.OnGameEnd();
+
     }
 
     public void RestartForGameOver()
     {
         gameOverMenu.SetActive(false);
         Time.timeScale = 1f;
+        PlayerPrefs.SetInt("gameMode", 1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void StartGame()
     {
         startMenu.SetActive(false);
-
         Time.timeScale = 1;
     }
 }

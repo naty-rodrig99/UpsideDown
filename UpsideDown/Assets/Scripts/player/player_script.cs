@@ -45,10 +45,10 @@ public class player_script : MonoBehaviour
     public SoundManager soundManager;
     public HealthManager healthManager;
     public MenuManager menuManager;
+    public BulletManager bulletManager;
 
-    public TextMeshProUGUI bulletText;
-    private int currentBullets = 0;
-    private int currentHealth = 3;
+    public int currentHealth = 3;
+    public int currentBullets = 0;
 
     private object console;
 
@@ -204,7 +204,7 @@ public class player_script : MonoBehaviour
     public void ManageBullet(int amount)
     {
         currentBullets += amount;
-        bulletText.text = currentBullets.ToString();
+        bulletManager.ModifyBullets(currentBullets);
     }
 
     public void ManageHealth(int amount)

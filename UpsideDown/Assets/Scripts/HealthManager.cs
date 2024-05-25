@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class HealthManager : MonoBehaviour
 {
     public int maxHearts = 5;
-    private int currentHearts = 3;
+    public int currentHearts = 3;
 
     public Image[] heartIcons;
     public Sprite fullHeart;
@@ -62,6 +62,7 @@ public class HealthManager : MonoBehaviour
             menuManager.GameOver();
         }
     }
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
