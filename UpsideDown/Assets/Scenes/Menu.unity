@@ -30700,6 +30700,8 @@ MonoBehaviour:
   scoreType1: {fileID: 21300000, guid: 1575413dbc4aca04c94f63f2ef3d9dba, type: 3}
   scoreType2: {fileID: 21300000, guid: 09e41958d4c5b5245a847103d0bcac32, type: 3}
   scoreType3: {fileID: 21300000, guid: e323b9283839c0e408c4d2a7ebf0d33b, type: 3}
+  silverScore: 30
+  goldScore: 45
 --- !u!1 &1217128238
 GameObject:
   m_ObjectHideFlags: 0
