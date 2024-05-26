@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using gamespace;
 
 public class SwitchBarUIBar : MonoBehaviour
 {
     public GameObject dynamicBar;
     public GameObject backgroundBar;
     public GameObject thresholdLine;
+    
 
 
     double switchCharge;
@@ -15,8 +17,23 @@ public class SwitchBarUIBar : MonoBehaviour
     public double chargeSpeed = 1;
     private double dynamicBar_full_height;
 
+    private WorldType _current_world;
+
     public bool ready;
     private Renderer _renderer;
+
+    void OnEnable()
+    {
+        WorldController.OnWorldChanged += UpdateWorld;
+    }
+    void OnDisable()
+    {
+        WorldController.OnWorldChanged -= UpdateWorld;
+    }
+    
+    void UpdateWorld(WorldType type){
+        _current_world = type;
+    }
 
     void Awake(){
         _renderer = dynamicBar.GetComponent<Renderer>();
@@ -50,7 +67,9 @@ public class SwitchBarUIBar : MonoBehaviour
     }
 
     void FixedUpdate(){
-        
+        if(_current_world == WorldType.BadWorld){
+            update_switch_ui_bar(0.8f/10.0f);
+        }
     }
 
     public void update_switch_ui_bar(double value){

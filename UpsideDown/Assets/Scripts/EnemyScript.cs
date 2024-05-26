@@ -160,7 +160,7 @@ public class Enemies : MonoBehaviour
                     direction = direction * -1;
                 }
                     
-                if(Mathf.Abs(main_player.transform.position.x - this.transform.position.x) < 5 && Mathf.Abs(main_player.transform.position.y - this.transform.position.y) < 2)
+                if(Mathf.Abs(main_player.transform.position.x - this.transform.position.x) < 7 && Mathf.Abs(main_player.transform.position.y - this.transform.position.y) < 2)
                 {
                     mode = "attack";
                 }
@@ -177,7 +177,7 @@ public class Enemies : MonoBehaviour
                     animator.SetBool("goodWorld", false);
                     animator.SetBool("tigerWalks", true);
                 }
-                int attackSpeed = 3;
+                int attackSpeed = 4;
                 //int layerMask = ~(LayerMask.GetMask("EnemyLayer"));
                 //hit = Physics2D.Raycast(boxCollider.bounds.center, new Vector2(direction,-1),Mathf.Sqrt(Mathf.Pow(boxCollider.bounds.extents.y , 2) + Mathf.Pow(boxCollider.bounds.extents.x, 2)) + 1.0f, layerMask);
                 if(hit_groundcheck.collider != null)
@@ -193,7 +193,7 @@ public class Enemies : MonoBehaviour
                     direction = direction * -1;
                     this.transform.Rotate(new Vector3(0, 180, 0));
                 }
-                if (Mathf.Abs(main_player.transform.position.x - this.transform.position.x) >= 5 || Mathf.Abs(main_player.transform.position.y - this.transform.position.y) >= 2)
+                if (Mathf.Abs(main_player.transform.position.x - this.transform.position.x) >= 10 || Mathf.Abs(main_player.transform.position.y - this.transform.position.y) >= 2)
                 {
                     mode = "badWorld";
                 }
