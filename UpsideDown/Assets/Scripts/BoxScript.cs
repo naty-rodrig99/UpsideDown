@@ -25,11 +25,11 @@ public class BoxScript : MonoBehaviour
     void change_world(WorldType world){       
         switch (world){
             case WorldType.BadWorld:
-                transform.position += new Vector3(0, -20, 0);
+                transform.position += new Vector3(0, -SETTINGS.worlds_offset, 0);
                 _rb.mass = 62.0f;
                 break;
             case WorldType.GoodWorld:
-                transform.position += new Vector3(0, 20, 0);
+                transform.position += new Vector3(0, SETTINGS.worlds_offset, 0);
                 _rb.mass = 1000.0f;
                 break;
         }

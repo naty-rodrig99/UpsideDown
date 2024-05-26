@@ -34,7 +34,7 @@ public class PlayerCamera : MonoBehaviour
     private float _playerVelocityX;
 
     private float _good_world_cam_y = 0.0f;
-    private float _bad_world_cam_y = -20f;
+    private float _bad_world_cam_y = -SETTINGS.worlds_offset;
     
 
     void OnEnable()
