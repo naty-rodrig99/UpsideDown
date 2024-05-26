@@ -31,6 +31,8 @@ public class Enemies : MonoBehaviour
     public int killScore = 10;
     public ScoreManager scoreManager;
 
+    public ParticleSystem heartParticles;
+
 
     void OnEnable()
     {
@@ -51,13 +53,28 @@ public class Enemies : MonoBehaviour
     }
     void die(){
         //Destroy(gameObject);
+        mode = "dead";
         scoreManager.ModifyScore(killScore);
+        WorldController.OnWorldChanged -= UpdateWorld;
+        switchWorld(WorldType.GoodWorld);
+        heartParticles.Play();
+        if (enemyType == EnemyType.Monkey)
+        {
+            animator.SetBool("goodWorld", true);
+            animator.SetBool("monkeyMoves", true);
+        } 
+        else if (enemyType == EnemyType.Tiger)
+        {
+            animator.SetBool("goodWorld", true);
+            //animator.SetBool("tigerWalks", true);
+        }
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
+        heartParticles.Stop();
         _health = init_health;
         current_world = WorldType.GoodWorld;
         initial_pos = transform.position;
@@ -79,6 +96,8 @@ public class Enemies : MonoBehaviour
 
     // Update is called once per frame
     void FixedUpdate(){
+        if(mode == "dead") return;
+                    
         _time += Time.deltaTime;
         if(collider_exists && (_time - _timeSinceLastHit) > 0.5 && mode == "attack"){
             Collider2D[] hits = Physics2D.OverlapBoxAll(overlapCollider.bounds.center, overlapCollider.bounds.size, 0);
@@ -209,6 +228,7 @@ public class Enemies : MonoBehaviour
 
     public void switchWorld(WorldType world)
     {
+        
         if (world == WorldType.GoodWorld)
         {
             this.transform.position += new Vector3(0, SETTINGS.worlds_offset , 0);
