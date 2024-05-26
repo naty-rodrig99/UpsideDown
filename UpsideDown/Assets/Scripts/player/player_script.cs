@@ -112,7 +112,7 @@ public class player_script : MonoBehaviour
         check_inputs();
     }
     void check_bounds(){
-        if ((WorldController.GetCurrentWorld() == WorldType.GoodWorld && transform.position.y < -14) || (WorldController.GetCurrentWorld() == WorldType.BadWorld && transform.position.y < -33))
+        if ((WorldController.GetCurrentWorld() == WorldType.GoodWorld && transform.position.y < -14) || (WorldController.GetCurrentWorld() == WorldType.BadWorld && transform.position.y < - SETTINGS.worlds_offset - 33))
         {
             transform.position = initial_pos;
             if (WorldController.GetCurrentWorld() == WorldType.BadWorld)
@@ -177,10 +177,14 @@ public class player_script : MonoBehaviour
         }
         switch (world){
             case WorldType.BadWorld:
-                transform.position += new Vector3(0, -20, 0);
+                Debug.Log("bad");
+                Debug.Log(SETTINGS.worlds_offset);
+                transform.position += new Vector3(0, -SETTINGS.worlds_offset , 0);
                 break;
             case WorldType.GoodWorld:
-                transform.position += new Vector3(0, 20, 0);
+                Debug.Log("GOOD");
+                Debug.Log(SETTINGS.worlds_offset);
+                transform.position += new Vector3(0, SETTINGS.worlds_offset , 0);
                 break;
         }
     }

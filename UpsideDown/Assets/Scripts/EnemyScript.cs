@@ -206,12 +206,12 @@ public class Enemies : MonoBehaviour
     {
         if (world == WorldType.GoodWorld)
         {
-            this.transform.position += new Vector3(0, 20, 0);
+            this.transform.position += new Vector3(0, SETTINGS.worlds_offset , 0);
             mode = "goodWorld";
         }
         else if (world == WorldType.BadWorld)
         {
-            this.transform.position += new Vector3(0, -20, 0);
+            this.transform.position += new Vector3(0, -SETTINGS.worlds_offset , 0);
             mode = "badWorld";
         }
     }

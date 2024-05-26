@@ -12,6 +12,10 @@ namespace gamespace
         BadWorld,
         NOWORLD
     }
+    public static class SETTINGS
+    {
+        public static float worlds_offset = 50.0f;
+    }
 }
 
 public static class WorldController
@@ -29,6 +33,8 @@ public static class WorldController
         get { return _current_world; }
         set
         {
+            Debug.Log("value was: " + _current_world);
+            Debug.Log("value is: " + value);
             if (_current_world != value)
             {
                 _current_world = value;
@@ -61,6 +67,7 @@ public static class WorldController
     }
     public static void change_world()
     {
+        Debug.Log(current_world);
         switch (current_world)
         {
             case WorldType.GoodWorld:
