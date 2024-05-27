@@ -8,7 +8,6 @@ public class SwitchBarUIBar : MonoBehaviour
     public GameObject dynamicBar;
     public GameObject backgroundBar;
     public GameObject thresholdLine;
-    
 
 
     double switchCharge;
@@ -21,6 +20,8 @@ public class SwitchBarUIBar : MonoBehaviour
 
     public bool ready;
     private Renderer _renderer;
+
+    public bool autoCharging;
 
     void OnEnable()
     {
@@ -46,7 +47,7 @@ public class SwitchBarUIBar : MonoBehaviour
 
     void Start()
     {
-        
+        autoCharging = false;
         
     }
 
@@ -67,8 +68,8 @@ public class SwitchBarUIBar : MonoBehaviour
     }
 
     void FixedUpdate(){
-        if(_current_world == WorldType.BadWorld){
-            update_switch_ui_bar(0.8f/10.0f);
+        if(autoCharging && _current_world == WorldType.BadWorld){
+            update_switch_ui_bar(0.3f/10.0f);
         }
     }
 
