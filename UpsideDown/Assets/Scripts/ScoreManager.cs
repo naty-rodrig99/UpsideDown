@@ -6,22 +6,25 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    public int scoreMax = 50;
+    public int scoreMax = 130;
     public int currentScore = 0;
 
-    public Image scoreIcon;
+    /*public Image scoreIcon;
     public TextMeshProUGUI scoreText;
 
     public Sprite scoreType1;
     public Sprite scoreType2;
     public Sprite scoreType3;
     public int silverScore;
-    public int goldScore;
+    public int goldScore;*/
+
+    public Image progressBarFill;
 
     // Start is called before the first frame update
     void Start()
     {
-        UpdateScoreIconAndText();
+        //UpdateScoreIconAndText();
+        UpdateProgressBar();
     }
 
     // Update is called once per frame
@@ -30,7 +33,7 @@ public class ScoreManager : MonoBehaviour
 
     }
 
-    void UpdateScoreIconAndText()
+    /*void UpdateScoreIconAndText()
     {
         if (currentScore >= silverScore)
         {
@@ -46,13 +49,20 @@ public class ScoreManager : MonoBehaviour
         }
 
         scoreText.text = currentScore.ToString();
-    }
+    }*/
 
     public void ModifyScore(int amount)
     {
         currentScore += amount;
-        UpdateScoreIconAndText();
+        //UpdateScoreIconAndText();
+        UpdateProgressBar();
     }
 
+    private void UpdateProgressBar()
+    {
+        // Calculate the fill amount (between 0 and 1)
+        float fillAmount = (float)currentScore / scoreMax;
+        progressBarFill.fillAmount = fillAmount;
+    }
 
 }

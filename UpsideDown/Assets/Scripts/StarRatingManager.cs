@@ -6,11 +6,11 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class StarRatingManager : MonoBehaviour
 {
-    public int maxHealth = 50;
-    public int maxKillCount = 50;
-    public int maxBullets = 50;
-    public float timer;
-    public float bestTime = 300.0f;
+    public int maxHealth = 5;
+    public int maxKillCount = 130;
+    public int maxBullets = 16;
+    //public float timer;
+    //public float bestTime = 300.0f;
 
     public Image star1;
     public Image star2;
@@ -24,7 +24,7 @@ public class StarRatingManager : MonoBehaviour
     public ScoreManager scoreManager;
     public BulletManager bulletManager;
 
-    private bool levelCompleted = false;
+    //private bool levelCompleted = false;
 
 
     // Start is called before the first frame update
@@ -36,10 +36,10 @@ public class StarRatingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (levelCompleted)
+        /*if (levelCompleted)
         {
             timer += Time.deltaTime;
-        }
+        }*/
     }
 
     void CalculateStarRating()
@@ -51,24 +51,18 @@ public class StarRatingManager : MonoBehaviour
         float normalizedHealth = (float)currentHealth / maxHealth;
         float normalizedKills = (float)enemyKillCount / maxKillCount;
         float normalizedBullets = (float)bulletsRemaining / maxBullets;
-        float normalizedTime = 0;
+        //float normalizedTime = 0;
 
 
         float healthWeight = 0.25f;
-        float killWeight = 0.25f;
+        float killWeight = 0.5f;
         float bulletWeight = 0.25f;
-        float timeWeight = 0f;
+        //float timeWeight = 0f;
 
-        if (levelCompleted)
-        {
-            normalizedTime = Mathf.Clamp01(1.0f - (timer / bestTime));
-            timeWeight = 0.25f;
-        }
 
         float finalScore = (normalizedHealth * healthWeight) +
                            (normalizedKills * killWeight) +
-                           (normalizedBullets * bulletWeight) +
-                           (normalizedTime * timeWeight);
+                           (normalizedBullets * bulletWeight) ;
 
         float starRating = finalScore * 3;
         float roundedRating = Mathf.Round(starRating * 2.0f) / 2.0f;
