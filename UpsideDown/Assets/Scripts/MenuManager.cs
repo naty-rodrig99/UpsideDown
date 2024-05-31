@@ -18,16 +18,19 @@ public class MenuManager : MonoBehaviour
 
     public StarRatingManager starsRatingManager;
 
+    static int gameMode = 0;
+
     // Start is called before the first frame update
     void Start()
     {
-        int gameMode = PlayerPrefs.GetInt("gameMode");
 
         if (gameMode == 0)
         {
             startMenu.SetActive(true);
-            Time.timeScale = 0;
+            Time.timeScale = 0f;
         }
+        //else
+        //    Time.timeScale = 1f;
     }
 
     // Update is called once per frame
@@ -76,7 +79,7 @@ public class MenuManager : MonoBehaviour
     public void RestartGame()
     {
         Resume();
-        PlayerPrefs.SetInt("gameMode", 1);
+        gameMode = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -100,13 +103,13 @@ public class MenuManager : MonoBehaviour
     {
         gameOverMenu.SetActive(false);
         Time.timeScale = 1f;
-        PlayerPrefs.SetInt("gameMode", 1);
+        gameMode = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void StartGame()
     {
         startMenu.SetActive(false);
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
     }
 }
